@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Комунікація — SyncOra</title>
+
+  <!-- Підключення шрифтів і стилів -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Анімація при прокрутці -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Шапка -->
+<header class="site-header">
+  <div class="nav">
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo.png" alt="SyncOra Logo">
+      </a>
+    </div>
+
+    <nav class="navigation">
+      <ul>
+        <li><a href="index.html">Головна</a></li>
+        <li><a href="tasks.html">Координація задач</a></li>
+        <li><a href="communication.html" class="active">Комунікація</a></li>
+        <li><a href="performance.html">Продуктивність</a></li>
+        <li><a href="motivation.html">Мотивація</a></li>
+      </ul>
+    </nav>
+
+    <div class="controls">
+      <div class="language-switcher">
+        <button onclick="changeLanguage('uk')">Укр</button>
+        <button onclick="changeLanguage('en')">En</button>
+      </div>
+    </div>
+
+    <!-- Гамбургер для мобільних -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</header>
+
+<!-- Головна секція сторінки -->
+<section class="page-header" style="background-image: url('images/communication-background.jpg');">
+  <div class="page-title" data-aos="fade-up">
+    <h1>Комунікація</h1>
+    <p class="page-subtitle">
+      Будьте на зв'язку зі своєю командою через чати, відеоконференції та спільні документи.
+    </p>
+  </div>
+</section>
+
+<main id="communication">
+  <section class="communication-features" data-aos="fade-up">
+    <div class="communication-feature" data-aos="zoom-in">
+      <h3>Чат у реальному часі</h3>
+      <p>Спілкуйтеся без затримок за допомогою командних чатів у реальному часі.</p>
+    </div>
+
+    <div class="communication-feature" data-aos="zoom-in" data-aos-delay="100">
+      <h3>Відеоконференції</h3>
+      <p>Проводьте відеозустрічі без складних налаштувань і додаткових додатків.</p>
+    </div>
+
+    <div class="communication-feature" data-aos="zoom-in" data-aos-delay="200">
+      <h3>Спільна робота над документами</h3>
+      <p>Редагуйте документи разом, бачачи зміни в режимі реального часу.</p>
+    </div>
+  </section>
+
+  <div class="communication-action" data-aos="fade-up">
+    <a href="javascript:void(0)" class="btn-large" onclick="openCommunicationModal()">Почати комунікацію</a>
+  </div>
+</main>
+
+<!-- Модальне вікно для початку комунікації -->
+<div id="communicationModal" class="modal">
+  <div class="modal-content" data-aos="zoom-in">
+    <span class="close" onclick="closeCommunicationModal()">&times;</span>
+    <h2>Нова комунікація</h2>
+    <form id="communicationForm">
+      <input type="text" id="chatTopic" placeholder="Тема розмови" required>
+      <select id="communicationType" required>
+        <option value="">Тип комунікації</option>
+        <option value="chat">Чат</option>
+        <option value="video">Відеоконференція</option>
+      </select>
+      <button type="submit" class="btn">Розпочати</button>
+    </form>
+  </div>
+</div>
+
+<!-- Футер -->
+<footer>
+  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
+</footer>
+
+<!-- Скрипти -->
+<script src="script.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+
+  function toggleMenu() {
+    const nav = document.querySelector('.navigation ul');
+    nav.classList.toggle('show');
+  }
+
+  function openCommunicationModal() {
+    document.getElementById('communicationModal').style.display = 'block';
+  }
+
+  function closeCommunicationModal() {
+    document.getElementById('communicationModal').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('communicationModal');
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('communicationForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const topic = document.getElementById('chatTopic').value;
+      const type = document.getElementById('communicationType').value;
+
+      alert(`Комунікація "${topic}" (${type === 'chat' ? 'Чат' : 'Відеоконференція'}) створена!`);
+      closeCommunicationModal();
+      form.reset();
+    });
+  });
+</script>
+
+</body>
+</html>

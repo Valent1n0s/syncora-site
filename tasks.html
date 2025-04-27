@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Координація задач — SyncOra</title>
+
+  <!-- Підключення шрифтів і стилів -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Анімація прокрутки -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Шапка -->
+<header class="site-header">
+  <div class="nav">
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo.png" alt="SyncOra Logo">
+      </a>
+    </div>
+
+    <nav class="navigation">
+      <ul>
+        <li><a href="index.html">Головна</a></li>
+        <li><a href="tasks.html" class="active">Координація задач</a></li>
+        <li><a href="communication.html">Комунікація</a></li>
+        <li><a href="performance.html">Продуктивність</a></li>
+        <li><a href="motivation.html">Мотивація</a></li>
+      </ul>
+    </nav>
+
+    <div class="controls">
+      <div class="language-switcher">
+        <button onclick="changeLanguage('uk')">Укр</button>
+        <button onclick="changeLanguage('en')">En</button>
+      </div>
+    </div>
+
+    <!-- Гамбургер для мобільних -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</header>
+
+<!-- Головна секція сторінки -->
+<section class="page-header" style="background-image: url('images/tasks-background.jpg');">
+  <div class="page-title" data-aos="fade-up">
+    <h1>Координація задач</h1>
+    <p class="page-subtitle">
+      Плануйте, організовуйте та керуйте завданнями вашої команди ефективно й прозоро.
+    </p>
+  </div>
+</section>
+
+<main id="task-coordination">
+  <section class="task-features" data-aos="fade-up">
+    <div class="task-feature" data-aos="zoom-in">
+      <h3>Планування завдань</h3>
+      <p>Створюйте завдання, встановлюйте дедлайни та призначайте відповідальних членів команди.</p>
+    </div>
+
+    <div class="task-feature" data-aos="zoom-in" data-aos-delay="100">
+      <h3>Призначення відповідальних</h3>
+      <p>Визначайте чітко, хто за що відповідає, і забезпечуйте максимальну прозорість.</p>
+    </div>
+
+    <div class="task-feature" data-aos="zoom-in" data-aos-delay="200">
+      <h3>Відстеження прогресу</h3>
+      <p>Контролюйте хід виконання задач за допомогою трекерів статусу та графіків прогресу.</p>
+    </div>
+  </section>
+
+  <div class="task-action" data-aos="fade-up">
+    <a href="javascript:void(0)" class="btn-large" onclick="openTaskModal()">Створити нове завдання</a>
+  </div>
+
+  <!-- Секція для списку створених завдань -->
+  <section id="taskList" class="task-list" data-aos="fade-up">
+    <h2>Створені завдання</h2>
+    <ul id="tasksContainer"></ul>
+  </section>
+</main>
+
+<!-- Модальне вікно для створення задачі -->
+<div id="taskModal" class="modal">
+  <div class="modal-content" data-aos="zoom-in">
+    <span class="close" onclick="closeTaskModal()">&times;</span>
+    <h2>Нове завдання</h2>
+    <form id="taskForm">
+      <input type="text" id="taskTitle" placeholder="Назва задачі" required>
+      <textarea id="taskDescription" placeholder="Опис задачі" required></textarea>
+      <input type="date" id="taskDeadline" required>
+      <input type="text" id="taskAssignee" placeholder="Виконавець" required>
+      <button type="submit" class="btn">Створити завдання</button>
+    </form>
+  </div>
+</div>
+
+<!-- Футер -->
+<footer>
+  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
+</footer>
+
+<!-- Скрипти -->
+<script src="script.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+
+  function toggleMenu() {
+    const nav = document.querySelector('.navigation ul');
+    nav.classList.toggle('show');
+  }
+
+  function openTaskModal() {
+    document.getElementById('taskModal').style.display = 'block';
+  }
+
+  function closeTaskModal() {
+    document.getElementById('taskModal').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('taskModal');
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  // Додавання задач у список
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('taskForm');
+    const tasksContainer = document.getElementById('tasksContainer');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById('taskTitle').value;
+      const description = document.getElementById('taskDescription').value;
+      const deadline = document.getElementById('taskDeadline').value;
+      const assignee = document.getElementById('taskAssignee').value;
+
+      const taskItem = document.createElement('li');
+      taskItem.className = 'task-item';
+      taskItem.innerHTML = `
+        <h3>${title}</h3>
+        <p>${description}</p>
+        <p><strong>Дедлайн:</strong> ${deadline}</p>
+        <p><strong>Виконавець:</strong> ${assignee}</p>
+      `;
+
+      tasksContainer.appendChild(taskItem);
+
+      alert('Завдання "' + title + '" створено успішно!');
+      closeTaskModal();
+      form.reset();
+    });
+  });
+</script>
+
+</body>
+</html>

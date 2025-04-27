@@ -1,0 +1,524 @@
+/* === ОБНУЛЕННЯ === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* === БАЗОВІ СТИЛІ === */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #ffffff;
+  color: #222222;
+  overflow-x: hidden;
+}
+
+/* === ХЕДЕР === */
+.site-header {
+  width: 100%;
+  padding: 20px 40px;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.logo img {
+  height: 180px;
+  width: 300px;
+}
+
+/* === НОВІ СТИЛІ ДЛЯ НАВІГАЦІЇ === */
+.navigation ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.navigation ul li a {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  box-shadow: 4px 4px 10px #d1d1d1, -4px -4px 10px #ffffff;
+  color: #222222;
+  transition: all 0.3s ease;
+}
+
+.navigation ul li a:hover {
+  background: linear-gradient(145deg, #0077ff, #005dc1);
+  color: #ffffff;
+  box-shadow: 4px 4px 15px rgba(0, 119, 255, 0.4), -4px -4px 15px rgba(0, 92, 193, 0.4);
+  transform: translateY(-3px);
+}
+
+/* === ПЕРЕМИКАЧ МОВИ === */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-switcher button {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.language-switcher button:hover {
+  background: #0077ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* === ГЕРОЙ СЕКЦІЯ === */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content h1 {
+  font-size: 60px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.hero-content p, .hero-description {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 24px;
+  opacity: 0.8;
+  margin-top: 15px;
+}
+
+.hero-description {
+  font-size: 18px;
+  max-width: 700px;
+  line-height: 1.6;
+  color: #444;
+  margin: 20px auto 0;
+}
+
+/* === КНОПКИ === */
+.btn, .btn-large, .learn-more {
+  display: inline-block;
+  background-color: #0077ff;
+  color: white;
+  padding: 14px 36px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0, 119, 255, 0.3);
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover, .btn-large:hover, .learn-more:hover {
+  background-color: #005dc1;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0, 92, 193, 0.5);
+}
+
+.learn-more {
+  padding: 10px 25px;
+  font-size: 16px;
+}
+
+/* === ІНТРО І МОЖЛИВОСТІ === */
+.features-intro {
+  text-align: center;
+  margin-top: 80px;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  font-size: 20px;
+  opacity: 0.7;
+  margin-bottom: 40px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  padding: 40px 20px 80px;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.feature {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.feature:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.feature h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  font-size: 18px;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+/* === ПІДСЕКЦІЇ tasks, communication, performance, motivation === */
+.page-header {
+  background-size: cover;
+  background-position: center;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #222;
+  padding: 60px 20px;
+}
+
+.page-title h1 {
+  font-size: 48px;
+  font-weight: 800;
+}
+
+.page-subtitle {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 20px;
+  margin-top: 15px;
+  opacity: 0.8;
+}
+
+.task-features,
+.communication-features,
+.performance-features,
+.motivation-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.task-feature,
+.communication-feature,
+.performance-feature,
+.motivation-feature {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.task-feature:hover,
+.communication-feature:hover,
+.performance-feature:hover,
+.motivation-feature:hover {
+  transform: translateY(-8px);
+  box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.task-feature h3,
+.communication-feature h3,
+.performance-feature h3,
+.motivation-feature h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.task-feature p,
+.communication-feature p,
+.performance-feature p,
+.motivation-feature p {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+.task-action,
+.communication-action,
+.performance-action,
+.motivation-action {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+/* === ФУТЕР === */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  background: #333;
+  color: white;
+}
+
+/* === АДАПТИВНЕ МЕНЮ ДЛЯ МОБІЛЬНИХ === */
+@media (max-width: 768px) {
+  .navigation ul {
+    display: none;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.95);
+    position: absolute;
+    top: 80px;
+    right: 40px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .navigation ul.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+  }
+
+  .menu-toggle div {
+    width: 30px;
+    height: 3px;
+    background: #222;
+    margin: 5px 0;
+    transition: 0.4s;
+  }
+}
+
+.menu-toggle {
+  display: none;
+}
+/* === МОДАЛЬНЕ ВІКНО === */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 40px 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+/* === МОДАЛЬНЕ ВІКНО ДЛЯ ЗАВДАНЬ === */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 40px 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Форма всередині модалки */
+#taskForm input,
+#taskForm textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+#taskForm button {
+  margin-top: 15px;
+}
+/* === СПИСОК СТВОРЕНИХ ЗАВДАНЬ === */
+.task-list {
+  margin: 60px auto;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.task-list h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#tasksContainer {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.task-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.task-item h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.task-item p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+/* Форма комунікації */
+#communicationForm input,
+#communicationForm select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+#communicationForm button {
+  margin-top: 15px;
+}
+/* Форма челенджу */
+#challengeForm input,
+#challengeForm textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+}
+
+#challengeForm button {
+  margin-top: 15px;
+}
+/* === БАЗОВІ СТИЛІ === */
+body {
+  font-family: 'Poppins', sans-serif;
+  /* заміна суцільного білого фону на картинку */
+  background: url('images/background.jpg') center center / cover no-repeat fixed;
+  color: #222222;
+  overflow-x: hidden;
+}

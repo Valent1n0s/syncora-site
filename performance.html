@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Моніторинг продуктивності — SyncOra</title>
+
+  <!-- Підключення шрифтів і стилів -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Анімація при прокрутці -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Шапка -->
+<header class="site-header">
+  <div class="nav">
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo.png" alt="SyncOra Logo">
+      </a>
+    </div>
+
+    <nav class="navigation">
+      <ul>
+        <li><a href="index.html">Головна</a></li>
+        <li><a href="tasks.html">Координація задач</a></li>
+        <li><a href="communication.html">Комунікація</a></li>
+        <li><a href="performance.html" class="active">Продуктивність</a></li>
+        <li><a href="motivation.html">Мотивація</a></li>
+      </ul>
+    </nav>
+
+    <div class="controls">
+      <div class="language-switcher">
+        <button onclick="changeLanguage('uk')">Укр</button>
+        <button onclick="changeLanguage('en')">En</button>
+      </div>
+    </div>
+
+    <!-- Гамбургер для мобільних -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</header>
+
+<!-- Головна секція сторінки -->
+<section class="page-header" style="background-image: url('images/performance-background.jpg');">
+  <div class="page-title" data-aos="fade-up">
+    <h1>Моніторинг продуктивності</h1>
+    <p class="page-subtitle">
+      Відстежуйте прогрес команди в реальному часі та оптимізуйте результати.
+    </p>
+  </div>
+</section>
+
+<main id="performance">
+  <section class="performance-features" data-aos="fade-up">
+    <div class="performance-feature" data-aos="zoom-in">
+      <h3>Трекер часу</h3>
+      <p>Фіксуйте робочий час над завданнями для кращого планування і звітності.</p>
+    </div>
+
+    <div class="performance-feature" data-aos="zoom-in" data-aos-delay="100">
+      <h3>Аналітика KPI</h3>
+      <p>Відстежуйте ключові показники успішності роботи та приймайте зважені рішення.</p>
+    </div>
+
+    <div class="performance-feature" data-aos="zoom-in" data-aos-delay="200">
+      <h3>Автоматичні звіти</h3>
+      <p>Отримуйте регулярні звіти щодо продуктивності кожного співробітника і команди загалом.</p>
+    </div>
+  </section>
+
+  <div class="performance-action" data-aos="fade-up">
+    <a href="javascript:void(0)" class="btn-large" onclick="openModal()">Переглянути звіти</a>
+  </div>
+</main>
+
+<!-- Модальне вікно -->
+<div id="reportModal" class="modal">
+  <div class="modal-content" data-aos="zoom-in">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2>Перегляд звітів</h2>
+    <p>Тут буде зведена інформація про продуктивність вашої команди. Ви зможете завантажити або переглянути окремі звіти за проєктами, командами чи індивідуально.</p>
+    <a href="#" class="btn">Завантажити звіт</a>
+  </div>
+</div>
+
+<!-- Футер -->
+<footer>
+  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
+</footer>
+
+<!-- Скрипти -->
+<script src="script.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+
+  function toggleMenu() {
+    const nav = document.querySelector('.navigation ul');
+    nav.classList.toggle('show');
+  }
+
+  function openModal() {
+    document.getElementById('reportModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('reportModal').style.display = 'none';
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('reportModal');
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  }
+</script>
+
+</body>
+</html>
