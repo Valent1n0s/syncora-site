@@ -9,157 +9,280 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Анімація при прокрутці -->
+  <!-- Вбудовані стилі для модалки -->
+  <style>
+    /* Стилі для модалки */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #fff;
+      width: 90%;
+      max-width: 480px;
+      border-radius: 16px;
+      padding: 30px 20px;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-size: 24px;
+      color: #888;
+      cursor: pointer;
+    }
+    .modal-content .close:hover {
+      color: #444;
+    }
+    #communicationForm input,
+    #communicationForm select {
+      width: 100%;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+    }
+    #communicationForm button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background: #0077ff;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,119,255,0.3);
+      transition: transform .2s, box-shadow .2s;
+    }
+    #communicationForm button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,92,193,0.4);
+    }
+  </style>
+
+  <!-- Скрипт перекладів і бургер-меню -->
+  <script>
+    let currentLang = 'uk';
+    const translations = {
+      uk: {
+        navHome:      "Головна",
+        navTasks:     "Координація задач",
+        navComm:      "Комунікація",
+        navPerf:      "Продуктивність",
+        navMot:       "Мотивація",
+        pageTitle:    "Комунікація",
+        pageSub:      "Будьте на зв'язку зі своєю командою через чати, відеоконференції та спільні документи.",
+        feat1Title:   "Чат у реальному часі",
+        feat1Desc:    "Спілкуйтеся без затримок за допомогою командних чатів у режимі реального часу.",
+        feat2Title:   "Відеоконференції",
+        feat2Desc:    "Проводьте відеозустрічі без складних налаштувань і додаткових додатків.",
+        feat3Title:   "Спільна робота над документами",
+        feat3Desc:    "Редагуйте документи разом, бачачи зміни одразу.",
+        btnAction:    "Почати комунікацію",
+        modalTitle:   "Нова комунікація",
+        modalTopic:   "Тема розмови",
+        modalType:    "Тип комунікації",
+        modalChat:    "Чат",
+        modalVideo:   "Відеоконференція",
+        modalSubmit:  "Розпочати",
+        footerText:   "© 2025 SyncOra. Всі права захищені."
+      },
+      en: {
+        navHome:      "Home",
+        navTasks:     "Task Coordination",
+        navComm:      "Communication",
+        navPerf:      "Performance",
+        navMot:       "Motivation",
+        pageTitle:    "Communication",
+        pageSub:      "Stay connected with your team via chats, video calls and shared docs.",
+        feat1Title:   "Real-time Chat",
+        feat1Desc:    "Talk instantly with team chats in real time.",
+        feat2Title:   "Video Conferencing",
+        feat2Desc:    "Host video meetings without complex setup or extra apps.",
+        feat3Title:   "Document Collaboration",
+        feat3Desc:    "Edit documents together and see updates instantly.",
+        btnAction:    "Start Communication",
+        modalTitle:   "New Communication",
+        modalTopic:   "Conversation Topic",
+        modalType:    "Communication Type",
+        modalChat:    "Chat",
+        modalVideo:   "Video Call",
+        modalSubmit:  "Start",
+        footerText:   "© 2025 SyncOra. All rights reserved."
+      }
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      if (!t) return;
+      currentLang = lang;
+
+      // Навігація
+      const nav = document.querySelectorAll('.navigation ul li a');
+      nav[0].innerText = t.navHome;
+      nav[1].innerText = t.navTasks;
+      nav[2].innerText = t.navComm;
+      nav[3].innerText = t.navPerf;
+      nav[4].innerText = t.navMot;
+
+      // Заголовок
+      document.querySelector('.page-title h1').innerText = t.pageTitle;
+      document.querySelector('.page-title p').innerText = t.pageSub;
+
+      // Фічі
+      const feats = document.querySelectorAll('.communication-feature');
+      feats.forEach((el, i) => {
+        el.querySelector('h3').innerText = t[`feat${i+1}Title`];
+        el.querySelector('p').innerText  = t[`feat${i+1}Desc`];
+      });
+
+      // Кнопка дії
+      document.querySelector('.communication-action .btn-large').innerText = t.btnAction;
+
+      // Модалка
+      document.querySelector('#communicationModal h2').innerText          = t.modalTitle;
+      document.getElementById('chatTopic').placeholder                   = t.modalTopic;
+      const sel = document.getElementById('communicationType');
+      sel.options[0].text = t.modalType;
+      sel.options[1].text = t.modalChat;
+      sel.options[2].text = t.modalVideo;
+      document.querySelector('#communicationForm button').innerText      = t.modalSubmit;
+
+      // Футер
+      document.querySelector('footer p').innerText = t.footerText;
+
+      // Перемикач мови
+      document.getElementById('lang-toggle').innerText = (lang==='uk'?'Укр':'En');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
+
+      // Перемикач мови
+      document.getElementById('lang-toggle')
+        .addEventListener('click', () => applyLanguage(currentLang==='uk'?'en':'uk'));
+
+      // Бургер-меню
+      document.querySelector('.menu-toggle')
+        .addEventListener('click', () => {
+          document.querySelector('.navigation ul').classList.toggle('show');
+        });
+    });
+  </script>
+
+  <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 
-<body>
+<body data-page="communication">
 
-<!-- Шапка -->
-<header class="site-header">
-  <div class="nav">
-    <div class="logo">
-      <a href="index.html">
-        <img src="images/logo.png" alt="SyncOra Logo">
-      </a>
-    </div>
-    
-<!-- Бургер-кнопка -->
-<div class="menu-toggle" aria-label="Toggle menu">
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-
-    <nav class="navigation">
-      <ul>
-        <li><a href="index.html">Головна</a></li>
-        <li><a href="tasks.html">Координація задач</a></li>
-        <li><a href="communication.html" class="active">Комунікація</a></li>
-        <li><a href="performance.html">Продуктивність</a></li>
-        <li><a href="motivation.html">Мотивація</a></li>
-      </ul>
-    </nav>
-
-    <div class="controls">
-      <div class="language-switcher">
-        <button onclick="changeLanguage('uk')">Укр</button>
-        <button onclick="changeLanguage('en')">En</button>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav">
+      <div class="logo">
+        <a href="index.html"><img src="images/logo.png" alt="SyncOra Logo"></a>
+      </div>
+      <div class="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="tasks.html">Координація задач</a></li>
+          <li><a href="communication.html" class="active">Комунікація</a></li>
+          <li><a href="performance.html">Продуктивність</a></li>
+          <li><a href="motivation.html">Мотивація</a></li>
+        </ul>
+      </nav>
+      <div class="controls">
+        <button id="lang-toggle" class="lang-toggle">Укр</button>
       </div>
     </div>
+  </header>
 
-    <!-- Гамбургер для мобільних -->
-    <div class="menu-toggle" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </div>
-</header>
-
-<!-- Головна секція сторінки -->
-<section class="page-header" style="background-image: url('images/communication-background.jpg');">
-  <div class="page-title" data-aos="fade-up">
-    <h1>Комунікація</h1>
-    <p class="page-subtitle">
-      Будьте на зв'язку зі своєю командою через чати, відеоконференції та спільні документи.
-    </p>
-  </div>
-</section>
-
-<main id="communication">
-  <section class="communication-features" data-aos="fade-up">
-    <div class="communication-feature" data-aos="zoom-in">
-      <h3>Чат у реальному часі</h3>
-      <p>Спілкуйтеся без затримок за допомогою командних чатів у реальному часі.</p>
-    </div>
-
-    <div class="communication-feature" data-aos="zoom-in" data-aos-delay="100">
-      <h3>Відеоконференції</h3>
-      <p>Проводьте відеозустрічі без складних налаштувань і додаткових додатків.</p>
-    </div>
-
-    <div class="communication-feature" data-aos="zoom-in" data-aos-delay="200">
-      <h3>Спільна робота над документами</h3>
-      <p>Редагуйте документи разом, бачачи зміни в режимі реального часу.</p>
+  <!-- Hero -->
+  <section class="page-header" style="background-image: url('images/communication-background.jpg');">
+    <div class="page-title" data-aos="fade-up">
+      <h1>Комунікація</h1>
+      <p class="page-subtitle">Будьте на зв'язку зі своєю командою через чати, відеоконференції та спільні документи.</p>
     </div>
   </section>
 
-  <div class="communication-action" data-aos="fade-up">
-    <a href="javascript:void(0)" class="btn-large" onclick="openCommunicationModal()">Почати комунікацію</a>
+  <!-- Features -->
+  <main id="communication">
+    <section class="communication-features" data-aos="fade-up">
+      <div class="communication-feature" data-aos="zoom-in">
+        <h3>Чат у реальному часі</h3>
+        <p>Спілкуйтеся без затримок за допомогою командних чатів у режимі реального часу.</p>
+      </div>
+      <div class="communication-feature" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Відеоконференції</h3>
+        <p>Проводьте відеозустрічі без складних налаштувань і додаткових додатків.</p>
+      </div>
+      <div class="communication-feature" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Спільна робота над документами</h3>
+        <p>Редагуйте документи разом, бачачи зміни одразу.</p>
+      </div>
+    </section>
+
+    <div class="communication-action" data-aos="fade-up">
+      <a href="#" id="openCommBtn" class="btn-large">Почати комунікацію</a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="communicationModal" class="modal">
+    <div class="modal-content" data-aos="zoom-in">
+      <span class="close">&times;</span>
+      <h2>Нова комунікація</h2>
+      <form id="communicationForm">
+        <input type="text" id="chatTopic" placeholder="Тема розмови" required>
+        <select id="communicationType" required>
+          <option value="">Тип комунікації</option>
+          <option value="chat">Чат</option>
+          <option value="video">Відеоконференція</option>
+        </select>
+        <button type="submit" class="btn">Розпочати</button>
+      </form>
+    </div>
   </div>
-</main>
 
-<!-- Модальне вікно для початку комунікації -->
-<div id="communicationModal" class="modal">
-  <div class="modal-content" data-aos="zoom-in">
-    <span class="close" onclick="closeCommunicationModal()">&times;</span>
-    <h2>Нова комунікація</h2>
-    <form id="communicationForm">
-      <input type="text" id="chatTopic" placeholder="Тема розмови" required>
-      <select id="communicationType" required>
-        <option value="">Тип комунікації</option>
-        <option value="chat">Чат</option>
-        <option value="video">Відеоконференція</option>
-      </select>
-      <button type="submit" class="btn">Розпочати</button>
-    </form>
-  </div>
-</div>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 SyncOra. Всі права захищені.</p>
+  </footer>
 
-<!-- Футер -->
-<footer>
-  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
-</footer>
-
-<!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({
-    duration: 1000,
-    once: true
-  });
-
-  function toggleMenu() {
-    const nav = document.querySelector('.navigation ul');
-    nav.classList.toggle('show');
-  }
-
-  function openCommunicationModal() {
-    document.getElementById('communicationModal').style.display = 'block';
-  }
-
-  function closeCommunicationModal() {
-    document.getElementById('communicationModal').style.display = 'none';
-  }
-
-  window.onclick = function(event) {
-    const modal = document.getElementById('communicationModal');
-    if (event.target == modal) {
-      modal.style.display = 'none';
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('communicationForm');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const topic = document.getElementById('chatTopic').value;
-      const type = document.getElementById('communicationType').value;
-
-      alert(`Комунікація "${topic}" (${type === 'chat' ? 'Чат' : 'Відеоконференція'}) створена!`);
-      closeCommunicationModal();
-      form.reset();
-    });
-  });
-  
   <!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 1000, once: true });
-</script>
+  <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Ініціалізація AOS
+    AOS.init({ duration: 1000, once: true });
+
+    // Open/close communication modal
+    const openBtn = document.getElementById('openCommBtn');
+    const modal   = document.getElementById('communicationModal');
+    const closeX  = modal.querySelector('.close');
+
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+    closeX.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  </script>
 </body>
 </html>

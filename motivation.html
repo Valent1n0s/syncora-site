@@ -5,162 +5,280 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мотивація — SyncOra</title>
 
-  <!-- Підключення шрифтів і стилів -->
+  <!-- Шрифти і стилі -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Анімація при прокрутці -->
+  <!-- Вбудовані стилі для модалки -->
+  <style>
+    /* Центрування та фон модалки */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    /* Контейнер модалки */
+    .modal-content {
+      background: #fff;
+      width: 90%;
+      max-width: 480px;
+      border-radius: 16px;
+      padding: 30px 20px;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    /* Кнопка закриття */
+    .modal-content .close {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-size: 24px;
+      color: #888;
+      cursor: pointer;
+    }
+    .modal-content .close:hover {
+      color: #444;
+    }
+    /* Поля форми */
+    #challengeForm input,
+    #challengeForm textarea {
+      width: 100%;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Кнопка форми */
+    #challengeForm button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background: #0077ff;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,119,255,0.3);
+      transition: transform .2s, box-shadow .2s;
+    }
+    #challengeForm button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,92,193,0.4);
+    }
+  </style>
+
+  <!-- Логіка перекладу та бургер-меню -->
+  <script>
+    let currentLang = 'uk';
+    const translations = {
+      uk: {
+        navHome:       "Головна",
+        navTasks:      "Координація задач",
+        navComm:       "Комунікація",
+        navPerf:       "Продуктивність",
+        navMot:        "Мотивація",
+        pageTitle:     "Мотивація",
+        pageSub:       "Підтримуйте ентузіазм команди за допомогою челенджів, нагадувань і системи нагород.",
+        feat1Title:    "Челенджі",
+        feat1Desc:     "Створюйте змагання між командами та окремими учасниками для досягнення цілей.",
+        feat2Title:    "Нагадування",
+        feat2Desc:     "Автоматичні нагадування допомагають зберігати ритм і підтримувати мотивацію.",
+        feat3Title:    "Система нагород",
+        feat3Desc:     "Відзначайте досягнення співробітників віртуальними відзнаками та бонусами.",
+        btnAction:     "Запустити челендж",
+        modalTitle:    "Новий челендж",
+        modalName:     "Назва челенджу",
+        modalDesc:     "Опис челенджу",
+        modalDeadline:"Дедлайн",
+        modalSubmit:   "Створити челендж",
+        footerText:    "© 2025 SyncOra. Всі права захищені."
+      },
+      en: {
+        navHome:       "Home",
+        navTasks:      "Task Coordination",
+        navComm:       "Communication",
+        navPerf:       "Performance",
+        navMot:        "Motivation",
+        pageTitle:     "Motivation",
+        pageSub:       "Keep your team’s spirit high with challenges, reminders and rewards.",
+        feat1Title:    "Challenges",
+        feat1Desc:     "Create competitions between teams and individuals to reach goals.",
+        feat2Title:    "Reminders",
+        feat2Desc:     "Automated reminders help keep the pace and motivation.",
+        feat3Title:    "Rewards System",
+        feat3Desc:     "Celebrate achievements with virtual badges and bonuses.",
+        btnAction:     "Start Challenge",
+        modalTitle:    "New Challenge",
+        modalName:     "Challenge Name",
+        modalDesc:     "Challenge Description",
+        modalDeadline:"Deadline",
+        modalSubmit:   "Create Challenge",
+        footerText:    "© 2025 SyncOra. All rights reserved."
+      }
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      if (!t) return;
+      currentLang = lang;
+
+      // Навігація
+      const nav = document.querySelectorAll('.navigation ul li a');
+      nav[0].innerText = t.navHome;
+      nav[1].innerText = t.navTasks;
+      nav[2].innerText = t.navComm;
+      nav[3].innerText = t.navPerf;
+      nav[4].innerText = t.navMot;
+
+      // Заголовок
+      document.querySelector('.page-title h1').innerText = t.pageTitle;
+      document.querySelector('.page-title p').innerText = t.pageSub;
+
+      // Фічі
+      const feats = document.querySelectorAll('.motivation-feature');
+      feats.forEach((el, i) => {
+        el.querySelector('h3').innerText = t[`feat${i+1}Title`];
+        el.querySelector('p').innerText  = t[`feat${i+1}Desc`];
+      });
+
+      // Кнопка дії
+      document.querySelector('.motivation-action .btn-large').innerText = t.btnAction;
+
+      // Модалка
+      document.querySelector('#challengeModal h2').innerText           = t.modalTitle;
+      document.getElementById('challengeTitle').placeholder           = t.modalName;
+      document.getElementById('challengeDescription').placeholder     = t.modalDesc;
+      document.getElementById('challengeDeadline').placeholder        = t.modalDeadline;
+      document.querySelector('#challengeForm button').innerText       = t.modalSubmit;
+
+      // Футер
+      document.querySelector('footer p').innerText = t.footerText;
+
+      // Перемикач мови
+      document.getElementById('lang-toggle').innerText = (lang === 'uk' ? 'Укр' : 'En');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
+
+      // Перемикач мови
+      document.getElementById('lang-toggle')
+        .addEventListener('click', () => applyLanguage(currentLang === 'uk' ? 'en' : 'uk'));
+
+      // Бургер-меню
+      document.querySelector('.menu-toggle')
+        .addEventListener('click', () => {
+          document.querySelector('.navigation ul').classList.toggle('show');
+        });
+    });
+  </script>
+
+  <!-- AOS -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
 
-<body>
+<body data-page="motivation">
 
-<!-- Шапка -->
-<header class="site-header">
-  <div class="nav">
-    <div class="logo">
-      <a href="index.html">
-        <img src="images/logo.png" alt="SyncOra Logo">
-      </a>
-    </div>
-
-    <!-- Бургер-кнопка -->
-    <div class="menu-toggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    
-    <nav class="navigation">
-      <ul>
-        <li><a href="index.html">Головна</a></li>
-        <li><a href="tasks.html">Координація задач</a></li>
-        <li><a href="communication.html">Комунікація</a></li>
-        <li><a href="performance.html">Продуктивність</a></li>
-        <li><a href="motivation.html" class="active">Мотивація</a></li>
-      </ul>
-    </nav>
-
-    <div class="controls">
-      <div class="language-switcher">
-        <button onclick="changeLanguage('uk')">Укр</button>
-        <button onclick="changeLanguage('en')">En</button>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav">
+      <div class="logo">
+        <a href="index.html"><img src="images/logo.png" alt="SyncOra Logo"></a>
+      </div>
+      <div class="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="tasks.html">Координація задач</a></li>
+          <li><a href="communication.html">Комунікація</a></li>
+          <li><a href="performance.html">Продуктивність</a></li>
+          <li><a href="motivation.html" class="active">Мотивація</a></li>
+        </ul>
+      </nav>
+      <div class="controls">
+        <button id="lang-toggle" class="lang-toggle">Укр</button>
       </div>
     </div>
+  </header>
 
-    <!-- Гамбургер для мобільних -->
-    <div class="menu-toggle" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </div>
-</header>
-
-<!-- Головна секція сторінки -->
-<section class="page-header" style="background-image: url('images/motivation-background.jpg');">
-  <div class="page-title" data-aos="fade-up">
-    <h1>Мотивація</h1>
-    <p class="page-subtitle">
-      Підтримуйте ентузіазм команди за допомогою челенджів, нагадувань і системи нагород.
-    </p>
-  </div>
-</section>
-
-<main id="motivation">
-  <section class="motivation-features" data-aos="fade-up">
-    <div class="motivation-feature" data-aos="zoom-in">
-      <h3>Челенджі</h3>
-      <p>Створюйте змагання між командами та окремими учасниками для досягнення цілей.</p>
-    </div>
-
-    <div class="motivation-feature" data-aos="zoom-in" data-aos-delay="100">
-      <h3>Нагадування</h3>
-      <p>Автоматичні нагадування допомагають зберігати ритм і підтримувати мотивацію.</p>
-    </div>
-
-    <div class="motivation-feature" data-aos="zoom-in" data-aos-delay="200">
-      <h3>Система нагород</h3>
-      <p>Відзначайте досягнення співробітників за допомогою віртуальних відзнак і бонусів.</p>
+  <!-- Hero -->
+  <section class="page-header" style="background-image: url('images/motivation-background.jpg');">
+    <div class="page-title" data-aos="fade-up">
+      <h1>Мотивація</h1>
+      <p>Підтримуйте ентузіазм команди за допомогою челенджів, нагадувань і системи нагород.</p>
     </div>
   </section>
 
-  <div class="motivation-action" data-aos="fade-up">
-    <a href="javascript:void(0)" class="btn-large" onclick="openChallengeModal()">Запустити челендж</a>
+  <!-- Features -->
+  <main id="motivation">
+    <section class="motivation-features" data-aos="fade-up">
+      <div class="motivation-feature" data-aos="zoom-in">
+        <h3>Челенджі</h3>
+        <p>Створюйте змагання між командами та окремими учасниками для досягнення цілей.</p>
+      </div>
+      <div class="motivation-feature" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Нагадування</h3>
+        <p>Автоматичні нагадування допомагають зберігати ритм і підтримувати мотивацію.</p>
+      </div>
+      <div class="motivation-feature" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Система нагород</h3>
+        <p>Відзначайте досягнення співробітників віртуальними відзнаками та бонусами.</p>
+      </div>
+    </section>
+
+    <div class="motivation-action" data-aos="fade-up">
+      <a href="#" id="openChallengeBtn" class="btn-large">Запустити челендж</a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="challengeModal" class="modal">
+    <div class="modal-content" data-aos="zoom-in">
+      <span class="close">&times;</span>
+      <h2>Новий челендж</h2>
+      <form id="challengeForm">
+        <input type="text"   id="challengeTitle"       placeholder="Назва челенджу" required>
+        <textarea            id="challengeDescription" placeholder="Опис челенджу" required></textarea>
+        <input type="date"    id="challengeDeadline"    required>
+        <button type="submit" class="btn">Створити челендж</button>
+      </form>
+    </div>
   </div>
-</main>
 
-<!-- Модальне вікно для запуску челенджу -->
-<div id="challengeModal" class="modal">
-  <div class="modal-content" data-aos="zoom-in">
-    <span class="close" onclick="closeChallengeModal()">&times;</span>
-    <h2>Новий челендж</h2>
-    <form id="challengeForm">
-      <input type="text" id="challengeTitle" placeholder="Назва челенджу" required>
-      <textarea id="challengeDescription" placeholder="Опис челенджу" required></textarea>
-      <input type="date" id="challengeDeadline" required>
-      <button type="submit" class="btn">Створити челендж</button>
-    </form>
-  </div>
-</div>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 SyncOra. Всі права захищені.</p>
+  </footer>
 
-<!-- Футер -->
-<footer>
-  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
-</footer>
-
-<!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({
-    duration: 1000,
-    once: true
-  });
-
-  function toggleMenu() {
-    const nav = document.querySelector('.navigation ul');
-    nav.classList.toggle('show');
-  }
-
-  function openChallengeModal() {
-    document.getElementById('challengeModal').style.display = 'block';
-  }
-
-  function closeChallengeModal() {
-    document.getElementById('challengeModal').style.display = 'none';
-  }
-
-  window.onclick = function(event) {
-    const modal = document.getElementById('challengeModal');
-    if (event.target == modal) {
-      modal.style.display = 'none';
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('challengeForm');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const title = document.getElementById('challengeTitle').value;
-      const description = document.getElementById('challengeDescription').value;
-      const deadline = document.getElementById('challengeDeadline').value;
-
-      alert(`Челендж "${title}" створено успішно!`);
-      closeChallengeModal();
-      form.reset();
-    });
-  });
   <!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 1000, once: true });
-</script>
-</body>
-</html>
+  <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
 
+    // Відкриття/закриття модалки
+    const openBtn  = document.getElementById('openChallengeBtn');
+    const modal    = document.getElementById('challengeModal');
+    const closeBtn = modal.querySelector('.close');
 
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  </script>
 </body>
 </html>

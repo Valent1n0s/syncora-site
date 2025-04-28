@@ -5,139 +5,256 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Моніторинг продуктивності — SyncOra</title>
 
-  <!-- Підключення шрифтів і стилів -->
+  <!-- Шрифти і стилі -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Анімація при прокрутці -->
+  <!-- Вбудовані стилі для модалки -->
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #fff;
+      width: 90%;
+      max-width: 480px;
+      border-radius: 16px;
+      padding: 30px 20px;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-size: 24px;
+      color: #888;
+      cursor: pointer;
+    }
+    .modal-content .close:hover {
+      color: #444;
+    }
+    #reportModal p {
+      margin: 20px 0;
+      line-height: 1.5;
+    }
+    #reportModal .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      background: #0077ff;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,119,255,0.3);
+      text-align: center;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    #reportModal .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,92,193,0.4);
+    }
+  </style>
+
+  <!-- Переклад і бургер-меню -->
+  <script>
+    let currentLang = 'uk';
+    const translations = {
+      uk: {
+        navHome:       "Головна",
+        navTasks:      "Координація задач",
+        navComm:       "Комунікація",
+        navPerf:       "Продуктивність",
+        navMot:        "Мотивація",
+        pageTitle:     "Моніторинг продуктивності",
+        pageSub:       "Відстежуйте прогрес команди в реальному часі та оптимізуйте результати.",
+        feat1Title:    "Трекер часу",
+        feat1Desc:     "Фіксуйте робочий час над завданнями для кращого планування і звітності.",
+        feat2Title:    "Аналітика KPI",
+        feat2Desc:     "Відстежуйте ключові показники успішності роботи та приймайте зважені рішення.",
+        feat3Title:    "Автоматичні звіти",
+        feat3Desc:     "Отримуйте регулярні звіти щодо продуктивності кожного співробітника і команди загалом.",
+        btnAction:     "Переглянути звіти",
+        modalTitle:    "Перегляд звітів",
+        modalText:     "Тут буде зведена інформація про продуктивність вашої команди. Ви зможете завантажити або переглянути окремі звіти за проєктами, командами чи індивідуально.",
+        modalDownload: "Завантажити звіт",
+        footerText:    "© 2025 SyncOra. Всі права захищені."
+      },
+      en: {
+        navHome:       "Home",
+        navTasks:      "Task Coordination",
+        navComm:       "Communication",
+        navPerf:       "Performance",
+        navMot:        "Motivation",
+        pageTitle:     "Performance Monitoring",
+        pageSub:       "Track your team's progress in real time and optimize results.",
+        feat1Title:    "Time Tracker",
+        feat1Desc:     "Record work hours on tasks for better planning and reporting.",
+        feat2Title:    "KPI Analytics",
+        feat2Desc:     "Monitor key performance indicators and make informed decisions.",
+        feat3Title:    "Automatic Reports",
+        feat3Desc:     "Receive regular reports on individual and team performance.",
+        btnAction:     "View Reports",
+        modalTitle:    "View Reports",
+        modalText:     "Here you will find aggregated data on your team’s performance. Download or view individual project, team, or personal reports.",
+        modalDownload: "Download Report",
+        footerText:    "© 2025 SyncOra. All rights reserved."
+      }
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      if (!t) return;
+      currentLang = lang;
+
+      // Навігація
+      const nav = document.querySelectorAll('.navigation ul li a');
+      nav[0].innerText = t.navHome;
+      nav[1].innerText = t.navTasks;
+      nav[2].innerText = t.navComm;
+      nav[3].innerText = t.navPerf;
+      nav[4].innerText = t.navMot;
+
+      // Заголовок
+      document.querySelector('.page-title h1').innerText = t.pageTitle;
+      document.querySelector('.page-title p').innerText = t.pageSub;
+
+      // Фічі
+      document.querySelectorAll('.performance-feature').forEach((el, i) => {
+        el.querySelector('h3').innerText = t[`feat${i+1}Title`];
+        el.querySelector('p').innerText  = t[`feat${i+1}Desc`];
+      });
+
+      // Кнопка дії
+      document.querySelector('.performance-action .btn-large').innerText = t.btnAction;
+
+      // Модалка
+      document.querySelector('#reportModal h2').innerText     = t.modalTitle;
+      document.querySelector('#reportModal p').innerText      = t.modalText;
+      document.querySelector('#reportModal .btn').innerText   = t.modalDownload;
+
+      // Футер
+      document.querySelector('footer p').innerText = t.footerText;
+
+      // Перемикач мови
+      document.getElementById('lang-toggle').innerText = lang === 'uk' ? 'Укр' : 'En';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
+
+      document.getElementById('lang-toggle')
+        .addEventListener('click', () => applyLanguage(currentLang === 'uk' ? 'en' : 'uk'));
+
+      document.querySelectorAll('.menu-toggle').forEach(btn =>
+        btn.addEventListener('click', () => {
+          document.querySelector('.navigation ul').classList.toggle('show');
+        })
+      );
+    });
+  </script>
+
+  <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
+<body data-page="performance">
 
-<body>
-
-<!-- Шапка -->
-<header class="site-header">
-  <div class="nav">
-    <div class="logo">
-      <a href="index.html">
-        <img src="images/logo.png" alt="SyncOra Logo">
-      </a>
-    </div>
-
-    <!-- Бургер-кнопка -->
-    <div class="menu-toggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    
-    <nav class="navigation">
-      <ul>
-        <li><a href="index.html">Головна</a></li>
-        <li><a href="tasks.html">Координація задач</a></li>
-        <li><a href="communication.html">Комунікація</a></li>
-        <li><a href="performance.html" class="active">Продуктивність</a></li>
-        <li><a href="motivation.html">Мотивація</a></li>
-      </ul>
-    </nav>
-
-    <div class="controls">
-      <div class="language-switcher">
-        <button onclick="changeLanguage('uk')">Укр</button>
-        <button onclick="changeLanguage('en')">En</button>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav">
+      <div class="logo">
+        <a href="index.html"><img src="images/logo.png" alt="SyncOra Logo"></a>
+      </div>
+      <div class="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="tasks.html">Координація задач</a></li>
+          <li><a href="communication.html">Комунікація</a></li>
+          <li><a href="performance.html" class="active">Продуктивність</a></li>
+          <li><a href="motivation.html">Мотивація</a></li>
+        </ul>
+      </nav>
+      <div class="controls">
+        <button id="lang-toggle" class="lang-toggle">Укр</button>
       </div>
     </div>
+  </header>
 
-    <!-- Гамбургер для мобільних -->
-    <div class="menu-toggle" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </div>
-</header>
-
-<!-- Головна секція сторінки -->
-<section class="page-header" style="background-image: url('images/performance-background.jpg');">
-  <div class="page-title" data-aos="fade-up">
-    <h1>Моніторинг продуктивності</h1>
-    <p class="page-subtitle">
-      Відстежуйте прогрес команди в реальному часі та оптимізуйте результати.
-    </p>
-  </div>
-</section>
-
-<main id="performance">
-  <section class="performance-features" data-aos="fade-up">
-    <div class="performance-feature" data-aos="zoom-in">
-      <h3>Трекер часу</h3>
-      <p>Фіксуйте робочий час над завданнями для кращого планування і звітності.</p>
-    </div>
-
-    <div class="performance-feature" data-aos="zoom-in" data-aos-delay="100">
-      <h3>Аналітика KPI</h3>
-      <p>Відстежуйте ключові показники успішності роботи та приймайте зважені рішення.</p>
-    </div>
-
-    <div class="performance-feature" data-aos="zoom-in" data-aos-delay="200">
-      <h3>Автоматичні звіти</h3>
-      <p>Отримуйте регулярні звіти щодо продуктивності кожного співробітника і команди загалом.</p>
+  <!-- Hero -->
+  <section class="page-header" style="background-image: url('images/performance-background.jpg');">
+    <div class="page-title" data-aos="fade-up">
+      <h1>Моніторинг продуктивності</h1>
+      <p class="page-subtitle">Відстежуйте прогрес команди в реальному часі та оптимізуйте результати.</p>
     </div>
   </section>
 
-  <div class="performance-action" data-aos="fade-up">
-    <a href="javascript:void(0)" class="btn-large" onclick="openModal()">Переглянути звіти</a>
+  <!-- Features -->
+  <main id="performance">
+    <section class="performance-features" data-aos="fade-up">
+      <div class="performance-feature" data-aos="zoom-in">
+        <h3>Трекер часу</h3>
+        <p>Фіксуйте робочий час над завданнями для кращого планування і звітності.</p>
+      </div>
+      <div class="performance-feature" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Аналітика KPI</h3>
+        <p>Відстежуйте ключові показники успішності роботи та приймайте зважені рішення.</p>
+      </div>
+      <div class="performance-feature" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Автоматичні звіти</h3>
+        <p>Отримуйте регулярні звіти щодо продуктивності кожного співробітника і команди загалом.</p>
+      </div>
+    </section>
+
+    <div class="performance-action" data-aos="fade-up">
+      <a href="#" id="openReportBtn" class="btn-large">Переглянути звіти</a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="reportModal" class="modal">
+    <div class="modal-content" data-aos="zoom-in">
+      <span class="close">&times;</span>
+      <h2>Перегляд звітів</h2>
+      <p>Тут буде зведена інформація про продуктивність вашої команди. Ви зможете завантажити або переглянути окремі звіти за проєктами, командами чи індивідуально.</p>
+      <a href="#" class="btn">Завантажити звіт</a>
+    </div>
   </div>
-</main>
 
-<!-- Модальне вікно -->
-<div id="reportModal" class="modal">
-  <div class="modal-content" data-aos="zoom-in">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2>Перегляд звітів</h2>
-    <p>Тут буде зведена інформація про продуктивність вашої команди. Ви зможете завантажити або переглянути окремі звіти за проєктами, командами чи індивідуально.</p>
-    <a href="#" class="btn">Завантажити звіт</a>
-  </div>
-</div>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 SyncOra. Всі права захищені.</p>
+  </footer>
 
-<!-- Футер -->
-<footer>
-  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
-</footer>
-
-<!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({
-    duration: 1000,
-    once: true
-  });
-
-  function toggleMenu() {
-    const nav = document.querySelector('.navigation ul');
-    nav.classList.toggle('show');
-  }
-
-  function openModal() {
-    document.getElementById('reportModal').style.display = 'block';
-  }
-
-  function closeModal() {
-    document.getElementById('reportModal').style.display = 'none';
-  }
-
-  window.onclick = function(event) {
-    const modal = document.getElementById('reportModal');
-    if (event.target == modal) {
-      modal.style.display = 'none';
-    }
-  }
   <!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 1000, once: true });
-</script>
+  <script src="script.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+    const openBtn  = document.getElementById('openReportBtn');
+    const modal    = document.getElementById('reportModal');
+    const closeBtn = modal.querySelector('.close');
+
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  </script>
 </body>
 </html>

@@ -5,181 +5,306 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Координація задач — SyncOra</title>
 
-  <!-- Підключення шрифтів і стилів -->
+  <!-- Шрифти і стилі -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- Анімація прокрутки -->
+  <!-- Стилі модалки -->
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 40px 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #888;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #000;
+    }
+    #taskForm input,
+    #taskForm textarea {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    #taskForm button {
+      padding: 12px 24px;
+      border-radius: 30px;
+      border: none;
+      background: #0077ff;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(0,119,255,0.3);
+      transition: all 0.3s ease;
+    }
+    #taskForm button:hover {
+      background: #005dc1;
+      transform: translateY(-2px);
+    }
+  </style>
+
+  <!-- AOS анімації -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Скрипт перекладу -->
+  <script>
+    let currentLang = 'uk';
+    const translations = {
+      uk: {
+        navHome: "Головна",
+        navTasks: "Координація задач",
+        navComm: "Комунікація",
+        navPerf: "Продуктивність",
+        navMot: "Мотивація",
+        pageTitle: "Координація задач",
+        pageSub: "Плануйте, організовуйте та керуйте завданнями вашої команди ефективно й прозоро.",
+        feat1Title: "Планування завдань",
+        feat1Desc: "Створюйте завдання, встановлюйте дедлайни та призначайте відповідальних.",
+        feat2Title: "Призначення відповідальних",
+        feat2Desc: "Чітко визначайте ролі для максимальної прозорості.",
+        feat3Title: "Відстеження прогресу",
+        feat3Desc: "Контролюйте виконання через статуси та графіки.",
+        btnAction: "Створити нове завдання",
+        modalTitle: "Нове завдання",
+        modalName: "Назва задачі",
+        modalDesc: "Опис задачі",
+        modalDeadline: "Дедлайн",
+        modalAssignee: "Виконавець",
+        modalSubmit: "Створити",
+        footerText: "© 2025 SyncOra. Всі права захищені."
+      },
+      en: {
+        navHome: "Home",
+        navTasks: "Task Coordination",
+        navComm: "Communication",
+        navPerf: "Performance",
+        navMot: "Motivation",
+        pageTitle: "Task Coordination",
+        pageSub: "Plan, organize and manage your team's tasks efficiently and transparently.",
+        feat1Title: "Task Planning",
+        feat1Desc: "Create tasks, set deadlines and assign owners.",
+        feat2Title: "Assign Owners",
+        feat2Desc: "Clearly define roles for maximum transparency.",
+        feat3Title: "Progress Tracking",
+        feat3Desc: "Monitor task completion through statuses and charts.",
+        btnAction: "Create New Task",
+        modalTitle: "New Task",
+        modalName: "Task Title",
+        modalDesc: "Task Description",
+        modalDeadline: "Deadline",
+        modalAssignee: "Assignee",
+        modalSubmit: "Create",
+        footerText: "© 2025 SyncOra. All rights reserved."
+      }
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      if (!t) return;
+      currentLang = lang;
+
+      const nav = document.querySelectorAll('.navigation ul li a');
+      nav[0].innerText = t.navHome;
+      nav[1].innerText = t.navTasks;
+      nav[2].innerText = t.navComm;
+      nav[3].innerText = t.navPerf;
+      nav[4].innerText = t.navMot;
+
+      document.querySelector('.page-title h1').innerText = t.pageTitle;
+      document.querySelector('.page-title p').innerText = t.pageSub;
+
+      const features = document.querySelectorAll('.task-feature');
+      features[0].querySelector('h3').innerText = t.feat1Title;
+      features[0].querySelector('p').innerText  = t.feat1Desc;
+      features[1].querySelector('h3').innerText = t.feat2Title;
+      features[1].querySelector('p').innerText  = t.feat2Desc;
+      features[2].querySelector('h3').innerText = t.feat3Title;
+      features[2].querySelector('p').innerText  = t.feat3Desc;
+
+      document.querySelector('.task-action .btn-large').innerText = t.btnAction;
+
+      document.querySelector('#taskModal h2').innerText = t.modalTitle;
+      document.getElementById('taskTitle').placeholder = t.modalName;
+      document.getElementById('taskDescription').placeholder = t.modalDesc;
+      document.getElementById('taskDeadline').placeholder = t.modalDeadline;
+      document.getElementById('taskAssignee').placeholder = t.modalAssignee;
+      document.querySelector('#taskForm button').innerText = t.modalSubmit;
+
+      document.querySelector('footer p').innerText = t.footerText;
+
+      document.getElementById('lang-toggle').innerText = (lang === 'uk' ? 'Укр' : 'En');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
+
+      document.getElementById('lang-toggle').addEventListener('click', () => {
+        applyLanguage(currentLang === 'uk' ? 'en' : 'uk');
+      });
+
+      document.querySelector('.menu-toggle').addEventListener('click', () => {
+        document.querySelector('.navigation ul').classList.toggle('show');
+      });
+    });
+  </script>
 </head>
 
-<body>
+<body data-page="tasks">
 
-<!-- Шапка -->
-<header class="site-header">
-  <div class="nav">
-    <div class="logo">
-      <a href="index.html">
-        <img src="images/logo.png" alt="SyncOra Logo">
-      </a>
-    </div>
-
-    <!-- Бургер-кнопка -->
-    <div class="menu-toggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    
-    <nav class="navigation">
-      <ul>
-        <li><a href="index.html">Головна</a></li>
-        <li><a href="tasks.html" class="active">Координація задач</a></li>
-        <li><a href="communication.html">Комунікація</a></li>
-        <li><a href="performance.html">Продуктивність</a></li>
-        <li><a href="motivation.html">Мотивація</a></li>
-      </ul>
-    </nav>
-
-    <div class="controls">
-      <div class="language-switcher">
-        <button onclick="changeLanguage('uk')">Укр</button>
-        <button onclick="changeLanguage('en')">En</button>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav">
+      <div class="logo">
+        <a href="index.html"><img src="images/logo.png" alt="SyncOra Logo"></a>
+      </div>
+      <div class="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="tasks.html" class="active">Координація задач</a></li>
+          <li><a href="communication.html">Комунікація</a></li>
+          <li><a href="performance.html">Продуктивність</a></li>
+          <li><a href="motivation.html">Мотивація</a></li>
+        </ul>
+      </nav>
+      <div class="controls">
+        <button id="lang-toggle" class="lang-toggle">Укр</button>
       </div>
     </div>
+  </header>
 
-    <!-- Гамбургер для мобільних -->
-    <div class="menu-toggle" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </div>
-</header>
-
-<!-- Головна секція сторінки -->
-<section class="page-header" style="background-image: url('images/tasks-background.jpg');">
-  <div class="page-title" data-aos="fade-up">
-    <h1>Координація задач</h1>
-    <p class="page-subtitle">
-      Плануйте, організовуйте та керуйте завданнями вашої команди ефективно й прозоро.
-    </p>
-  </div>
-</section>
-
-<main id="task-coordination">
-  <section class="task-features" data-aos="fade-up">
-    <div class="task-feature" data-aos="zoom-in">
-      <h3>Планування завдань</h3>
-      <p>Створюйте завдання, встановлюйте дедлайни та призначайте відповідальних членів команди.</p>
-    </div>
-
-    <div class="task-feature" data-aos="zoom-in" data-aos-delay="100">
-      <h3>Призначення відповідальних</h3>
-      <p>Визначайте чітко, хто за що відповідає, і забезпечуйте максимальну прозорість.</p>
-    </div>
-
-    <div class="task-feature" data-aos="zoom-in" data-aos-delay="200">
-      <h3>Відстеження прогресу</h3>
-      <p>Контролюйте хід виконання задач за допомогою трекерів статусу та графіків прогресу.</p>
+  <!-- Page Header -->
+  <section class="page-header" style="background-image: url('images/tasks-background.jpg');">
+    <div class="page-title" data-aos="fade-up">
+      <h1>Координація задач</h1>
+      <p class="page-subtitle">Плануйте, організовуйте та керуйте завданнями вашої команди ефективно й прозоро.</p>
     </div>
   </section>
 
-  <div class="task-action" data-aos="fade-up">
-    <a href="javascript:void(0)" class="btn-large" onclick="openTaskModal()">Створити нове завдання</a>
+  <!-- Main Content -->
+  <main id="task-coordination">
+    <section class="task-features" data-aos="fade-up">
+      <div class="task-feature" data-aos="zoom-in">
+        <h3>Планування завдань</h3>
+        <p>Створюйте завдання, встановлюйте дедлайни та призначайте відповідальних.</p>
+      </div>
+      <div class="task-feature" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Призначення відповідальних</h3>
+        <p>Чітко визначайте ролі для максимальної прозорості.</p>
+      </div>
+      <div class="task-feature" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Відстеження прогресу</h3>
+        <p>Контролюйте виконання через статуси та графіки.</p>
+      </div>
+    </section>
+
+    <div class="task-action" data-aos="fade-up">
+      <a href="#" id="openTaskBtn" class="btn-large">Створити нове завдання</a>
+    </div>
+
+    <section id="taskList" class="task-list" data-aos="fade-up">
+      <h2>Створені завдання</h2>
+      <ul id="tasksContainer"></ul>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="taskModal" class="modal">
+    <div class="modal-content" data-aos="zoom-in">
+      <span class="close">&times;</span>
+      <h2>Нове завдання</h2>
+      <form id="taskForm">
+        <input type="text" id="taskTitle" placeholder="Назва задачі" required>
+        <textarea id="taskDescription" placeholder="Опис задачі" required></textarea>
+        <input type="date" id="taskDeadline" required>
+        <input type="text" id="taskAssignee" placeholder="Виконавець" required>
+        <button type="submit">Створити</button>
+      </form>
+    </div>
   </div>
 
-  <!-- Секція для списку створених завдань -->
-  <section id="taskList" class="task-list" data-aos="fade-up">
-    <h2>Створені завдання</h2>
-    <ul id="tasksContainer"></ul>
-  </section>
-</main>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 SyncOra. Всі права захищені.</p>
+  </footer>
 
-<!-- Модальне вікно для створення задачі -->
-<div id="taskModal" class="modal">
-  <div class="modal-content" data-aos="zoom-in">
-    <span class="close" onclick="closeTaskModal()">&times;</span>
-    <h2>Нове завдання</h2>
-    <form id="taskForm">
-      <input type="text" id="taskTitle" placeholder="Назва задачі" required>
-      <textarea id="taskDescription" placeholder="Опис задачі" required></textarea>
-      <input type="date" id="taskDeadline" required>
-      <input type="text" id="taskAssignee" placeholder="Виконавець" required>
-      <button type="submit" class="btn">Створити завдання</button>
-    </form>
-  </div>
-</div>
+  <!-- AOS Script -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
 
-<!-- Футер -->
-<footer>
-  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
-</footer>
-
-<!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({
-    duration: 1000,
-    once: true
-  });
-
-  function toggleMenu() {
-    const nav = document.querySelector('.navigation ul');
-    nav.classList.toggle('show');
-  }
-
-  function openTaskModal() {
-    document.getElementById('taskModal').style.display = 'block';
-  }
-
-  function closeTaskModal() {
-    document.getElementById('taskModal').style.display = 'none';
-  }
-
-  window.onclick = function(event) {
+    const openBtn = document.getElementById('openTaskBtn');
     const modal = document.getElementById('taskModal');
-    if (event.target == modal) {
-      modal.style.display = 'none';
-    }
-  }
+    const closeBtn = modal.querySelector('.close');
 
-  // Додавання задач у список
-  document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('taskForm');
-    const tasksContainer = document.getElementById('tasksContainer');
-
-    form.addEventListener('submit', function (e) {
+    openBtn.addEventListener('click', e => {
       e.preventDefault();
+      modal.style.display = 'flex';
+    });
 
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+
+    document.getElementById('taskForm').addEventListener('submit', e => {
+      e.preventDefault();
       const title = document.getElementById('taskTitle').value;
-      const description = document.getElementById('taskDescription').value;
+      const desc = document.getElementById('taskDescription').value;
       const deadline = document.getElementById('taskDeadline').value;
       const assignee = document.getElementById('taskAssignee').value;
 
-      const taskItem = document.createElement('li');
-      taskItem.className = 'task-item';
-      taskItem.innerHTML = `
+      const container = document.getElementById('tasksContainer');
+      const li = document.createElement('li');
+      li.className = 'task-item';
+      li.innerHTML = `
         <h3>${title}</h3>
-        <p>${description}</p>
+        <p>${desc}</p>
         <p><strong>Дедлайн:</strong> ${deadline}</p>
         <p><strong>Виконавець:</strong> ${assignee}</p>
       `;
+      container.appendChild(li);
 
-      tasksContainer.appendChild(taskItem);
-
-      alert('Завдання "' + title + '" створено успішно!');
-      closeTaskModal();
-      form.reset();
+      modal.style.display = 'none';
+      e.target.reset();
     });
-  });
-  <!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 1000, once: true });
-</script>
+  </script>
+
 </body>
 </html>
-

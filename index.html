@@ -5,116 +5,196 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SyncOra — Платформа для віддалених команд</title>
 
-  <!-- Підключення шрифтів -->
+  <!-- Шрифти і стилі -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
-  
-  <!-- Стилі -->
   <link rel="stylesheet" href="style.css">
-  
-  <!-- Анімація при скролі -->
+
+  <!-- AOS анімації -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <!-- Переклад тексту -->
+  <script>
+    let currentLang = 'uk';
+    const translations = {
+      uk: {
+        navHome: "Головна",
+        navTasks: "Координація задач",
+        navComm: "Комунікація",
+        navPerf: "Продуктивність",
+        navMot: "Мотивація",
+        mainTitle: "Ласкаво просимо в SyncOra",
+        subtitle: "Ваша платформа для сучасної командної роботи",
+        heroDesc: "Обʼєднуйте команди, керуйте проєктами, аналізуйте продуктивність і підтримуйте мотивацію співробітників. Створено для тих, хто прагне ефективності у віддаленій роботі.",
+        btnLearn: "Докладніше",
+        featuresTitle: "Наші можливості",
+        featuresSubtitle: "Все необхідне для ефективної командної роботи",
+        taskTitle: "Координація задач",
+        taskDesc: "Планування і управління проєктами для максимальної організованості.",
+        commTitle: "Комунікація",
+        commDesc: "Швидкі чати, відеозустрічі та спільна робота над документами.",
+        perfTitle: "Моніторинг продуктивності",
+        perfDesc: "Трекінг часу, аналітика KPI та автоматичні звіти для прийняття рішень.",
+        motTitle: "Мотивація",
+        motDesc: "Підвищення залученості через гейміфікацію, нагороди та челенджі.",
+        footerText: "© 2025 SyncOra. Всі права захищені."
+      },
+      en: {
+        navHome: "Home",
+        navTasks: "Task Coordination",
+        navComm: "Communication",
+        navPerf: "Performance",
+        navMot: "Motivation",
+        mainTitle: "Welcome to SyncOra",
+        subtitle: "Your platform for modern team collaboration",
+        heroDesc: "Unite your teams, manage projects, analyze performance and keep motivation high. Built for those who strive for remote efficiency.",
+        btnLearn: "Learn More",
+        featuresTitle: "Our Features",
+        featuresSubtitle: "Everything you need for effective teamwork",
+        taskTitle: "Task Coordination",
+        taskDesc: "Project planning and management for seamless workflows.",
+        commTitle: "Communication",
+        commDesc: "Fast chats, video meetings, and collaborative documents.",
+        perfTitle: "Performance Monitoring",
+        perfDesc: "Track time, analyze KPIs, and generate automatic reports.",
+        motTitle: "Motivation",
+        motDesc: "Increase engagement with gamification, rewards, and challenges.",
+        footerText: "© 2025 SyncOra. All rights reserved."
+      }
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang];
+      if (!t) return;
+      currentLang = lang;
+
+      const nav = document.querySelectorAll('.navigation ul li a');
+      nav[0].innerText = t.navHome;
+      nav[1].innerText = t.navTasks;
+      nav[2].innerText = t.navComm;
+      nav[3].innerText = t.navPerf;
+      nav[4].innerText = t.navMot;
+
+      document.getElementById('main-title').innerText = t.mainTitle;
+      document.getElementById('subtitle').innerText = t.subtitle;
+      document.getElementById('hero-description').innerText = t.heroDesc;
+      document.querySelector('.btn').innerText = t.btnLearn;
+
+      document.querySelector('.section-title').innerText = t.featuresTitle;
+      document.querySelector('.section-subtitle').innerText = t.featuresSubtitle;
+
+      const features = document.querySelectorAll('.feature');
+      features[0].querySelector('h3').innerText = t.taskTitle;
+      features[0].querySelector('p').innerText  = t.taskDesc;
+      features[1].querySelector('h3').innerText = t.commTitle;
+      features[1].querySelector('p').innerText  = t.commDesc;
+      features[2].querySelector('h3').innerText = t.perfTitle;
+      features[2].querySelector('p').innerText  = t.perfDesc;
+      features[3].querySelector('h3').innerText = t.motTitle;
+      features[3].querySelector('p').innerText  = t.motDesc;
+
+      document.querySelector('footer p').innerText = t.footerText;
+
+      document.getElementById('lang-toggle').innerText = (lang === 'uk' ? 'Укр' : 'En');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      applyLanguage(currentLang);
+
+      document.getElementById('lang-toggle').addEventListener('click', () => {
+        applyLanguage(currentLang === 'uk' ? 'en' : 'uk');
+      });
+
+      document.querySelector('.menu-toggle').addEventListener('click', () => {
+        document.querySelector('.navigation ul').classList.toggle('show');
+      });
+    });
+  </script>
 </head>
 
-<body>
+<body data-page="home">
 
-<!-- Шапка -->
-<header class="site-header">
-  <div class="nav">
-    <div class="logo">
-      <a href="index.html">
-        <img src="images/logo.png" alt="SyncOra Logo">
-      </a>
-    </div>
-
-    <!-- Бургер-меню для мобільних/планшетів -->
-    <div class="menu-toggle" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav class="navigation">
-      <ul>
-        <li><a href="index.html">Головна</a></li>
-        <li><a href="tasks.html">Координація задач</a></li>
-        <li><a href="communication.html">Комунікація</a></li>
-        <li><a href="performance.html">Продуктивність</a></li>
-        <li><a href="motivation.html">Мотивація</a></li>
-      </ul>
-    </nav>
-
-    <div class="controls">
-      <div class="language-switcher">
-        <button onclick="changeLanguage('uk')">Укр</button>
-        <button onclick="changeLanguage('en')">En</button>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav">
+      <div class="logo">
+        <a href="index.html"><img src="images/logo.png" alt="SyncOra Logo"></a>
+      </div>
+      <div class="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="index.html">Головна</a></li>
+          <li><a href="tasks.html">Координація задач</a></li>
+          <li><a href="communication.html">Комунікація</a></li>
+          <li><a href="performance.html">Продуктивність</a></li>
+          <li><a href="motivation.html">Мотивація</a></li>
+        </ul>
+      </nav>
+      <div class="controls">
+        <button id="lang-toggle" class="lang-toggle">Укр</button>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- Головна секція Hero -->
-<section class="hero" style="background-image: url('images/background.jpg');">
-  <div class="overlay"></div>
-  
-  <div class="hero-content" data-aos="fade-up">
-    <h1 id="main-title">Ласкаво просимо в <strong>SyncOra</strong></h1>
-    <p id="subtitle">Ваша платформа для сучасної командної роботи</p>
-    <p id="hero-description" class="hero-description">
-      Обʼєднуйте команди, керуйте проєктами, аналізуйте продуктивність і підтримуйте мотивацію співробітників.<br>
-      Створено для тих, хто прагне ефективності у віддаленій роботі.
-    </p>
-    <a href="#features" class="btn">Докладніше</a>
-  </div>
-</section>
-
-<!-- Секція Наші можливості -->
-<main id="features">
-  <section class="features-intro" data-aos="fade-up">
-    <h2 class="section-title">Наші можливості</h2>
-    <p class="section-subtitle">Все необхідне для ефективної командної роботи</p>
-  </section>
-
-  <section class="features" data-aos="fade-up">
-    <div class="feature" data-aos="zoom-in">
-      <img src="images/tasks.png" alt="Координація задач" class="feature-icon">
-      <h3 id="task-title">Координація задач</h3>
-      <p id="task-desc">Планування і управління проєктами для максимальної організованості.</p>
-      <a href="tasks.html" class="learn-more">Докладніше</a>
-    </div>
-
-    <div class="feature" data-aos="zoom-in" data-aos-delay="100">
-      <img src="images/communication.png" alt="Комунікація" class="feature-icon">
-      <h3 id="comm-title">Комунікація</h3>
-      <p id="comm-desc">Швидкі чати, відеозустрічі та спільна робота над документами.</p>
-      <a href="communication.html" class="learn-more">Докладніше</a>
-    </div>
-
-    <div class="feature" data-aos="zoom-in" data-aos-delay="200">
-      <img src="images/performance.png" alt="Моніторинг продуктивності" class="feature-icon">
-      <h3 id="perf-title">Моніторинг продуктивності</h3>
-      <p id="perf-desc">Трекінг часу, аналітика KPI та автоматичні звіти для прийняття рішень.</p>
-      <a href="performance.html" class="learn-more">Докладніше</a>
-    </div>
-
-    <div class="feature" data-aos="zoom-in" data-aos-delay="300">
-      <img src="images/motivation.png" alt="Мотивація" class="feature-icon">
-      <h3 id="mot-title">Мотивація</h3>
-      <p id="mot-desc">Підвищення залученості через гейміфікацію, нагороди та челенджі.</p>
-      <a href="motivation.html" class="learn-more">Докладніше</a>
+  <!-- Hero -->
+  <section class="hero" style="background-image: url('images/background.jpg');">
+    <div class="overlay"></div>
+    <div class="hero-content" data-aos="fade-up">
+      <h1 id="main-title">Ласкаво просимо в SyncOra</h1>
+      <p id="subtitle">Ваша платформа для сучасної командної роботи</p>
+      <p id="hero-description" class="hero-description">
+        Обʼєднуйте команди, керуйте проєктами, аналізуйте продуктивність і підтримуйте мотивацію співробітників.<br>
+        Створено для тих, хто прагне ефективності у віддаленій роботі.
+      </p>
+      <a href="#features" class="btn">Докладніше</a>
     </div>
   </section>
-</main>
 
-<!-- Футер -->
-<footer>
-  <p>&copy; 2025 SyncOra. Всі права захищені.</p>
-</footer>
+  <!-- Features -->
+  <main id="features">
+    <section class="features-intro" data-aos="fade-up">
+      <h2 class="section-title">Наші можливості</h2>
+      <p class="section-subtitle">Все необхідне для ефективної командної роботи</p>
+    </section>
+    <section class="features" data-aos="fade-up">
+      <div class="feature" data-aos="zoom-in">
+        <img src="images/tasks.png" alt="Tasks" class="feature-icon">
+        <h3>Координація задач</h3>
+        <p>Планування і управління проєктами для максимальної організованості.</p>
+        <a href="tasks.html" class="learn-more">Докладніше</a>
+      </div>
+      <div class="feature" data-aos="zoom-in" data-aos-delay="100">
+        <img src="images/communication.png" alt="Communication" class="feature-icon">
+        <h3>Комунікація</h3>
+        <p>Швидкі чати, відеозустрічі та спільна робота над документами.</p>
+        <a href="communication.html" class="learn-more">Докладніше</a>
+      </div>
+      <div class="feature" data-aos="zoom-in" data-aos-delay="200">
+        <img src="images/performance.png" alt="Performance" class="feature-icon">
+        <h3>Моніторинг продуктивності</h3>
+        <p>Трекінг часу, аналітика KPI та автоматичні звіти для прийняття рішень.</p>
+        <a href="performance.html" class="learn-more">Докладніше</a>
+      </div>
+      <div class="feature" data-aos="zoom-in" data-aos-delay="300">
+        <img src="images/motivation.png" alt="Motivation" class="feature-icon">
+        <h3>Мотивація</h3>
+        <p>Підвищення залученості через гейміфікацію, нагороди та челенджі.</p>
+        <a href="motivation.html" class="learn-more">Докладніше</a>
+      </div>
+    </section>
+  </main>
 
-<!-- Скрипти -->
-<script src="script.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 1000, once: true });
-</script>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 SyncOra. Всі права захищені.</p>
+  </footer>
+
+  <!-- Скрипти -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+  </script>
+
 </body>
 </html>
