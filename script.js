@@ -5,7 +5,7 @@ const translations = {
   uk: {
     // Навігація
     navHome:      "Головна",
-    navTasks:     "Координація задач",
+    navTasks:     "Управління",
     navComm:      "Комунікація",
     navPerf:      "Продуктивність",
     navMot:       "Мотивація",
@@ -21,7 +21,7 @@ const translations = {
     featuresSubtitle: "Все необхідне для ефективної командної роботи",
 
     // Картки можливостей
-    taskTitle:   "Координація задач",
+    taskTitle:   "Управління",
     taskDesc:    "Планування і управління проєктами для максимальної організованості.",
     commTitle:   "Комунікація",
     commDesc:    "Швидкі чати, відеозустрічі та спільна робота над документами.",
@@ -31,7 +31,7 @@ const translations = {
     motDesc:     "Підвищення залученості через гейміфікацію, нагороди та челенджі.",
 
     // Page headers
-    pageTasksTitle:    "Координація задач",
+    pageTasksTitle:    "Управління",
     pageTasksSubtitle: "Плануйте, організовуйте та керуйте завданнями вашої команди ефективно й прозоро.",
     pageCommTitle:     "Комунікація",
     pageCommSubtitle:  "Налаштуйте чати, відеозустрічі та обмін файлами для швидкої взаємодії.",
@@ -72,7 +72,7 @@ const translations = {
   },
   en: {
     navHome:      "Home",
-    navTasks:     "Task Coordination",
+    navTasks:     "Management",
     navComm:      "Communication",
     navPerf:      "Performance",
     navMot:       "Motivation",
@@ -85,7 +85,7 @@ const translations = {
     featuresTitle:    "Our Features",
     featuresSubtitle: "Everything you need for effective teamwork",
 
-    taskTitle:   "Task Coordination",
+    taskTitle:   "Management",
     taskDesc:    "Project planning and task management for seamless workflows.",
     commTitle:   "Communication",
     commDesc:    "Fast chats, video meetings and document collaboration.",
@@ -94,7 +94,7 @@ const translations = {
     motTitle:    "Motivation",
     motDesc:     "Boost engagement with gamified challenges and rewards.",
 
-    pageTasksTitle:    "Task Coordination",
+    pageTasksTitle:    "Management",
     pageTasksSubtitle: "Plan, organize and manage your team’s tasks efficiently and transparently.",
     pageCommTitle:     "Communication",
     pageCommSubtitle:  "Set up chats, video calls and file sharing for seamless interaction.",
