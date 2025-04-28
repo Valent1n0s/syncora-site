@@ -115,3 +115,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+// бургер-меню
+function toggleMenu() {
+  const navList = document.querySelector('.navigation ul');
+  if (navList) {
+    navList.classList.toggle('show');
+  }
+}
+
+// прив’язка обробника після завантаження DOM
+document.addEventListener('DOMContentLoaded', () => {
+  const burger = document.querySelector('.menu-toggle');
+  if (burger) {
+    burger.addEventListener('click', toggleMenu);
+  }
+});
