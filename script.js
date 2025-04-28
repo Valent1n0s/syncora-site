@@ -1,4 +1,6 @@
-// Переклад текстів
+// script.js
+
+// —————— ПЕРЕКЛАД ТЕКСТІВ ——————
 const translations = {
   uk: {
     mainTitle: "Ласкаво просимо в SyncOra",
@@ -26,67 +28,90 @@ const translations = {
   }
 };
 
-// Зміна мови
 function changeLanguage(lang) {
   if (!translations[lang]) return;
-  document.getElementById('main-title').innerText = translations[lang].mainTitle;
-  document.getElementById('subtitle').innerText = translations[lang].subtitle;
-  document.getElementById('task-title').innerText = translations[lang].taskTitle;
-  document.getElementById('task-desc').innerText = translations[lang].taskDesc;
-  document.getElementById('comm-title').innerText = translations[lang].commTitle;
-  document.getElementById('comm-desc').innerText = translations[lang].commDesc;
-  document.getElementById('perf-title').innerText = translations[lang].perfTitle;
-  document.getElementById('perf-desc').innerText = translations[lang].perfDesc;
-  document.getElementById('mot-title').innerText = translations[lang].motTitle;
-  document.getElementById('mot-desc').innerText = translations[lang].motDesc;
-}
-<script>
-function openModal() {
-  document.getElementById('reportModal').style.display = 'block';
+
+  document.getElementById('main-title').innerText   = translations[lang].mainTitle;
+  document.getElementById('subtitle').innerText     = translations[lang].subtitle;
+  document.getElementById('task-title').innerText   = translations[lang].taskTitle;
+  document.getElementById('task-desc').innerText    = translations[lang].taskDesc;
+  document.getElementById('comm-title').innerText   = translations[lang].commTitle;
+  document.getElementById('comm-desc').innerText    = translations[lang].commDesc;
+  document.getElementById('perf-title').innerText   = translations[lang].perfTitle;
+  document.getElementById('perf-desc').innerText    = translations[lang].perfDesc;
+  document.getElementById('mot-title').innerText    = translations[lang].motTitle;
+  document.getElementById('mot-desc').innerText     = translations[lang].motDesc;
 }
 
-function closeModal() {
-  document.getElementById('reportModal').style.display = 'none';
+// —————— ГАМБУРГЕР-МЕНЮ ——————
+function toggleMenu() {
+  const navList = document.querySelector('.navigation ul');
+  if (navList) navList.classList.toggle('show');
 }
 
-// Закриття модального вікна при кліку поза ним
-window.onclick = function(event) {
-  const modal = document.getElementById('reportModal');
-  if (event.target == modal) {
-    modal.style.display = 'none';
-  }
+// —————— МОДАЛЬНІ ВІКНА ——————
+function openModal(id) {
+  document.getElementById(id).style.display = 'block';
 }
-</script>
-<script>
-function openTaskModal() {
-  document.getElementById('taskModal').style.display = 'block';
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
 }
 
-function closeTaskModal() {
-  document.getElementById('taskModal').style.display = 'none';
-}
-
-// Закриття модального вікна при кліку поза вікном
-window.onclick = function(event) {
-  const modal = document.getElementById('taskModal');
-  if (event.target == modal) {
-    modal.style.display = 'none';
-  }
-}
-
-// Обробка форми
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('taskForm');
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const title = document.getElementById('taskTitle').value;
-    const description = document.getElementById('taskDescription').value;
-    const deadline = document.getElementById('taskDeadline').value;
-    const assignee = document.getElementById('taskAssignee').value;
-    console.log('Нова задача:', { title, description, deadline, assignee });
-    alert('Завдання "' + title + '" створено успішно!');
-    closeTaskModal();
-    form.reset();
+// —————— ОБРОБКА ВІКОН ПРИ КЛІКУ ПО ЗОВНІ ——————
+window.addEventListener('click', event => {
+  ['reportModal', 'taskModal', 'challengeModal'].forEach(id => {
+    const modal = document.getElementById(id);
+    if (modal && event.target === modal) {
+      modal.style.display = 'none';
+    }
   });
 });
-</script>
+
+// —————— ОБРОБКА ФОРМИ НА СТОРІНЦІ ЗАВДАНЬ ——————
+document.addEventListener('DOMContentLoaded', () => {
+  // гамбургер
+  const burger = document.querySelector('.menu-toggle');
+  if (burger) burger.addEventListener('click', toggleMenu);
+
+  // форма задач
+  const taskForm = document.getElementById('taskForm');
+  if (taskForm) {
+    taskForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const title       = document.getElementById('taskTitle').value;
+      const description = document.getElementById('taskDescription').value;
+      const deadline    = document.getElementById('taskDeadline').value;
+      const assignee    = document.getElementById('taskAssignee').value;
+
+      // TODO: тут можна додати логіку збереження чи рендерингу списку
+      alert(`Завдання "${title}" створено успішно!`);
+
+      closeModal('taskModal');
+      taskForm.reset();
+    });
+  }
+
+  // форма звітів
+  const reportForm = document.getElementById('reportForm');
+  if (reportForm) {
+    reportForm.addEventListener('submit', e => {
+      e.preventDefault();
+      // аналогічно обробити звіт
+      alert('Звіт відправлено!');
+      closeModal('reportModal');
+      reportForm.reset();
+    });
+  }
+
+  // форма челенджів
+  const challengeForm = document.getElementById('challengeForm');
+  if (challengeForm) {
+    challengeForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const title = document.getElementById('challengeTitle').value;
+      alert(`Челендж "${title}" створено!`);
+      closeModal('challengeModal');
+      challengeForm.reset();
+    });
+  }
+});
