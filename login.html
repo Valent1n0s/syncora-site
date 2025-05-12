@@ -1,49 +1,136 @@
-
 <!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Вхід — SyncOra</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    button:hover {
+      background: #005fd0;
+    }
+    .alt {
+      text-align: center;
+      margin-top: 10px;
+    }
+    #googleLoginBtn {
+      background: #db4437;
+    }
+  </style>
 </head>
 <body>
-  <div class="auth-container">
+  <div class="login-box">
     <h2>Вхід до кабінету</h2>
     <form id="loginForm">
-      <input type="email" id="loginEmail" placeholder="Email" required>
-      <input type="password" id="loginPassword" placeholder="Пароль" required>
-      <div class="error" id="loginError"></div>
-      <button class="btn" type="submit">Увійти</button>
-      <p class="auth-link">Ще не маєте акаунту? <a href="register.html">Зареєструватися</a></p>
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Пароль" required />
+      <button type="submit">Увійти</button>
     </form>
+    <button id="googleLoginBtn">Увійти через Google</button>
+    <div class="alt">
+      <a href="register.html">Ще не маєте акаунту? Зареєструватися</a>
+    </div>
+    <p id="loginError" style="color:red;text-align:center;margin-top:10px;"></p>
   </div>
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-      const users = JSON.parse(localStorage.getItem('users')) || [];
-      hashPassword(password).then(hashed => {
-        const user = users.find(user => user.email === email && user.password === hashed);
-        if (!user) {
-          document.getElementById('loginError').innerText = 'Невірний email або пароль.';
-          return;
-        }
-        localStorage.setItem('loggedInUser', JSON.stringify(user));
-        window.location.href = 'dashboard.html';
-      });
-    });
+  <!-- Google Login Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-    async function hashPassword(password) {
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwcanAMLbeLhI9wtDFkTNXyo3RlnfTEvg",
+      authDomain: "syncora-cdfa0.firebaseapp.com",
+      projectId: "syncora-cdfa0",
+      storageBucket: "syncora-cdfa0.firebasestorage.app",
+      messagingSenderId: "811896090212",
+      appId: "1:811896090212:web:d89901d880a002b3587971"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    document.getElementById('googleLoginBtn').addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        localStorage.setItem('loggedInUser', JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          provider: "google"
+        }));
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        alert("Помилка Google-входу: " + err.message);
+      }
+    });
+  </script>
+
+  <!-- Email/Password логіка -->
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
       const encoder = new TextEncoder();
       const data = encoder.encode(password);
       const hashBuffer = await crypto.subtle.digest("SHA-256", data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
+      const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      const user = users.find(u => u.email === email && u.password === hashedPassword);
+      if (!user) {
+        document.getElementById('loginError').textContent = 'Невірний email або пароль.';
+        return;
+      }
+
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+      window.location.href = 'dashboard.html';
+    });
   </script>
 </body>
 </html>
