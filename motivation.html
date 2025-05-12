@@ -1,82 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мотивація — SyncOra</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Мотивація — SyncOra</title>
+<!-- Шрифти і стилі -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&amp;family=Urbanist:wght@400;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<!-- Вбудовані стилі для модалки -->
 
-  <!-- Шрифти і стилі -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Вбудовані стилі для модалки -->
-  <style>
-    /* Центрування та фон модалки */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      align-items: center;
-      justify-content: center;
-    }
-    /* Контейнер модалки */
-    .modal-content {
-      background: #fff;
-      width: 90%;
-      max-width: 480px;
-      border-radius: 16px;
-      padding: 30px 20px;
-      position: relative;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    }
-    /* Кнопка закриття */
-    .modal-content .close {
-      position: absolute;
-      top: 16px; right: 16px;
-      font-size: 24px;
-      color: #888;
-      cursor: pointer;
-    }
-    .modal-content .close:hover {
-      color: #444;
-    }
-    /* Поля форми */
-    #challengeForm input,
-    #challengeForm textarea {
-      width: 100%;
-      margin-bottom: 16px;
-      padding: 12px 14px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      font-family: 'Poppins', sans-serif;
-    }
-    /* Кнопка форми */
-    #challengeForm button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      border: none;
-      border-radius: 30px;
-      background: #0077ff;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0,119,255,0.3);
-      transition: transform .2s, box-shadow .2s;
-    }
-    #challengeForm button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0,92,193,0.4);
-    }
-  </style>
-
-  <!-- Логіка перекладу та бургер-меню -->
-  <script>
+<!-- Логіка перекладу та бургер-меню -->
+<script>
     let currentLang = 'uk';
     const translations = {
       uk: {
@@ -180,91 +115,274 @@
         });
     });
   </script>
+<!-- AOS -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
 
-  <!-- AOS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(to bottom, #f2f4f7, #ffffff);
+    color: #111;
+    margin: 0;
+  }
+  .motivation-feature {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+    padding: 24px;
+    transition: transform 0.2s ease;
+  }
+  .motivation-feature:hover {
+    transform: translateY(-4px);
+  }
+  .btn-large {
+    background: #007aff;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,122,255,0.3);
+    transition: background 0.3s ease;
+  }
+  .btn-large:hover {
+    background: #005fce;
+  }
+  .challenge-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  .challenge-item {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+  .challenge-item:hover {
+    transform: translateY(-4px);
+  }
+  .challenge-item h3 {
+    margin-top: 0;
+    color: #007aff;
+  }
+  .challenge-item button {
+    margin-top: 10px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-right: 8px;
+    cursor: pointer;
+  }
+</style>
 </head>
-
 <body data-page="motivation">
+<!-- Header -->
+<header class="site-header">
+<div class="nav">
+<div class="logo">
+<a href="index.html"><img alt="SyncOra Logo" src="images/logo.png"/></a>
+</div>
+<div aria-label="Toggle menu" class="menu-toggle">
+<span></span><span></span><span></span>
+</div>
+<nav class="navigation">
+<ul>
+<li><a href="index.html">Головна</a></li>
+<li><a href="tasks.html">Управління</a></li>
+<li><a href="communication.html">Комунікація</a></li>
+<li><a href="performance.html">Продуктивність</a></li>
+<li><a class="active" href="motivation.html">Мотивація</a></li>
+</ul>
+</nav>
+<div class="controls">
+<button class="lang-toggle" id="lang-toggle">Укр</button>
+<a class="auth-btn" href="login.html" id="userAction">Увійти</a>
+</div>
+</div>
+</header>
+<!-- Hero -->
+<section class="page-header" style="background-image: url('images/motivation-background.jpg');">
+<div class="page-title" data-aos="fade-up">
+<h1>Мотивація</h1>
+<p>Підтримуйте ентузіазм команди за допомогою челенджів, нагадувань і системи нагород.</p>
+</div>
+</section>
+<!-- Features -->
+<main id="motivation">
+<section class="motivation-features" data-aos="fade-up">
+<div class="motivation-feature" data-aos="zoom-in">
+<h3>Челенджі</h3>
+<p>Створюйте змагання між командами та окремими учасниками для досягнення цілей.</p>
+</div>
+<div class="motivation-feature" data-aos="zoom-in" data-aos-delay="100">
+<h3>Нагадування</h3>
+<p>Автоматичні нагадування допомагають зберігати ритм і підтримувати мотивацію.</p>
+</div>
+<div class="motivation-feature" data-aos="zoom-in" data-aos-delay="200">
+<h3>Система нагород</h3>
+<p>Відзначайте досягнення співробітників віртуальними відзнаками та бонусами.</p>
+</div>
+</section>
+<div class="motivation-action" data-aos="fade-up">
+<a class="btn-large" href="#" id="openChallengeBtn">Запустити челендж</a>
+</div>
+<section class="challenge-list" data-aos="fade-up" id="challengeList">
+<h2>Активні челенджі</h2>
+<ul id="challengesContainer"></ul>
+</section>
+<div class="export-controls" style="text-align:center; margin-top: 24px;">
+<button onclick="exportData('json')" style="padding:8px 16px; margin-right: 10px;">Експортувати JSON</button>
+<button onclick="exportData('csv')" style="padding:8px 16px;">Експортувати CSV</button>
+</div>
+</main>
+<!-- Modal -->
+<div class="modal" id="challengeModal">
+<div class="modal-content" data-aos="zoom-in">
+<span class="close">×</span>
+<h2>Новий челендж</h2>
+<form id="challengeForm">
+<input id="challengeTitle" placeholder="Назва челенджу" required="" type="text"/>
+<textarea id="challengeDescription" placeholder="Опис челенджу" required=""></textarea>
+<input id="challengeDeadline" required="" type="date"/>
+<button class="btn" type="submit">Створити челендж</button>
+</form>
+</div>
+</div>
+<!-- Footer -->
+<footer>
+<p>© 2025 SyncOra. Всі права захищені.</p>
+</footer>
+<!-- Скрипти -->
+<script>
+function editItem(index) {
+  const type = document.body.dataset.page;
+  const key = {
+    tasks: 'tasks',
+    performance: 'reports',
+    communication: 'notes',
+    motivation: 'challenges'
+  }[type];
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="nav">
-      <div class="logo">
-        <a href="index.html"><img src="images/logo.png" alt="SyncOra Logo"></a>
-      </div>
-      <div class="menu-toggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </div>
-      <nav class="navigation">
-        <ul>
-          <li><a href="index.html">Головна</a></li>
-          <li><a href="tasks.html">Управління</a></li>
-          <li><a href="communication.html">Комунікація</a></li>
-          <li><a href="performance.html">Продуктивність</a></li>
-          <li><a href="motivation.html" class="active">Мотивація</a></li>
-        </ul>
-      </nav>
-      <div class="controls">
-        <button id="lang-toggle" class="lang-toggle">Укр</button>
-      </div>
-    </div>
-  </header>
+  const items = JSON.parse(localStorage.getItem(key)) || [];
+  const item = items[index];
+  const newTitle = prompt("Змінити заголовок:", item.title || item.topic);
+  const newText  = prompt("Змінити опис:", item.desc || item.text);
+  if (newTitle !== null && newText !== null) {
+    if (key === 'tasks') {
+      const newDeadline = prompt("Змінити дедлайн:", item.deadline);
+      const newAssignee = prompt("Змінити виконавця:", item.assignee);
+      items[index] = { title: newTitle, desc: newText, deadline: newDeadline, assignee: newAssignee };
+    } else {
+      items[index] = key === 'notes'
+        ? { topic: newTitle, text: newText }
+        : { title: newTitle, text: newText };
+    }
+    localStorage.setItem(key, JSON.stringify(items));
+    location.reload();
+  }
+}
+</script><script>
+function exportData(format) {
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  if (!user) {
+    alert("Спочатку увійдіть у акаунт.");
+    return;
+  }
+  const key = {
+    tasks: 'tasks',
+    performance: 'reports',
+    communication: 'notes',
+    motivation: 'challenges'
+  }[document.body.dataset.page];
 
-  <!-- Hero -->
-  <section class="page-header" style="background-image: url('images/motivation-background.jpg');">
-    <div class="page-title" data-aos="fade-up">
-      <h1>Мотивація</h1>
-      <p>Підтримуйте ентузіазм команди за допомогою челенджів, нагадувань і системи нагород.</p>
-    </div>
-  </section>
+  const rawData = JSON.parse(localStorage.getItem(key)) || [];
+  const filtered = rawData.filter(item => !item.email || item.email === user.email);
+  const filename = `${key}_${user.email.replace(/[@.]/g, '_')}.${format}`;
 
-  <!-- Features -->
-  <main id="motivation">
-    <section class="motivation-features" data-aos="fade-up">
-      <div class="motivation-feature" data-aos="zoom-in">
-        <h3>Челенджі</h3>
-        <p>Створюйте змагання між командами та окремими учасниками для досягнення цілей.</p>
-      </div>
-      <div class="motivation-feature" data-aos="zoom-in" data-aos-delay="100">
-        <h3>Нагадування</h3>
-        <p>Автоматичні нагадування допомагають зберігати ритм і підтримувати мотивацію.</p>
-      </div>
-      <div class="motivation-feature" data-aos="zoom-in" data-aos-delay="200">
-        <h3>Система нагород</h3>
-        <p>Відзначайте досягнення співробітників віртуальними відзнаками та бонусами.</p>
-      </div>
-    </section>
+  if (format === 'json') {
+    const blob = new Blob([JSON.stringify(filtered, null, 2)], { type: 'application/json' });
+    downloadBlob(blob, filename);
+  } else if (format === 'csv') {
+    const headers = Object.keys(filtered[0] || {});
+    const rows = filtered.map(obj => headers.map(k => JSON.stringify(obj[k] || '')).join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    downloadBlob(blob, filename);
+  }
+}
 
-    <div class="motivation-action" data-aos="fade-up">
-      <a href="#" id="openChallengeBtn" class="btn-large">Запустити челендж</a>
-    </div>
-  </main>
-
-  <!-- Modal -->
-  <div id="challengeModal" class="modal">
-    <div class="modal-content" data-aos="zoom-in">
-      <span class="close">&times;</span>
-      <h2>Новий челендж</h2>
-      <form id="challengeForm">
-        <input type="text"   id="challengeTitle"       placeholder="Назва челенджу" required>
-        <textarea            id="challengeDescription" placeholder="Опис челенджу" required></textarea>
-        <input type="date"    id="challengeDeadline"    required>
-        <button type="submit" class="btn">Створити челендж</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 SyncOra. Всі права захищені.</p>
-  </footer>
-
-  <!-- Скрипти -->
-  <script src="script.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
+function downloadBlob(blob, filename) {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script><script src="lang.js"></script>
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="script.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+function loadChallenges() {
+  const container = document.getElementById('challengesContainer');
+  container.innerHTML = '';
+  const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+  challenges.forEach((c, index) => {
+    const item = document.createElement('li');
+    item.className = 'challenge-item';
+    item.innerHTML = `<h3>${c.title}</h3><p>${c.desc}</p><p><strong>Дедлайн:</strong> ${c.deadline}</p>
+    <button onclick="deleteChallenge(${index})" style="margin-top:10px;padding:6px 12px;border:none;border-radius:6px;background:#ff4d4f;color:#fff;cursor:pointer;">Видалити
+    <button onclick="editItem(${index})" style="margin-left:10px;padding:6px 12px;border:none;border-radius:6px;background:#ffaa00;color:#fff;cursor:pointer;">Редагувати</button>
+</button>`;
+    container.appendChild(item);
+  });
+}
+function saveChallengeToStorage(challenge) {
+  const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+  challenges.push({ ...challenge, email: JSON.parse(localStorage.getItem('loggedInUser')).email });
+  localStorage.setItem('challenges', JSON.stringify(challenges));
+}
+function deleteChallenge(index) {
+  const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+  challenges.splice(index, 1);
+  localStorage.setItem('challenges', JSON.stringify(challenges));
+  loadChallenges();
+}
+document.getElementById('challengeForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const title = document.getElementById('challengeTitle').value;
+  const desc = document.getElementById('challengeDescription').value;
+  const deadline = document.getElementById('challengeDeadline').value;
+  const newChallenge = { title, desc, deadline };
+  saveChallengeToStorage(newChallenge);
+  loadChallenges();
+  document.getElementById('challengeModal').style.display = 'none';
+  e.target.reset();
+});
+document.addEventListener('DOMContentLoaded', loadChallenges);
+</script><script>
     AOS.init({ duration: 1000, once: true });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const userBtn = document.getElementById('userAction');
+  if (userBtn) {
+    const user = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (user) {
+      userBtn.textContent = user.name || 'Кабінет';
+      userBtn.setAttribute('href', 'dashboard.html');
+    } else {
+      userBtn.textContent = 'Увійти';
+      userBtn.setAttribute('href', 'login.html');
+    }
+  }
+});
+
 
     // Відкриття/закриття модалки
     const openBtn  = document.getElementById('openChallengeBtn');

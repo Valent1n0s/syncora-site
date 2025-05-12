@@ -451,3 +451,13 @@ body {
   color: #fff;
   transform: scale(1.05);
 }
+.auth-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #0077ff;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 10px;
+}

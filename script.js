@@ -1,298 +1,237 @@
-// script.js
-
-// Усього тексту на сайті
-const translations = {
-  uk: {
-    // Навігація
-    navHome:      "Головна",
-    navTasks:     "Управління",
-    navComm:      "Комунікація",
-    navPerf:      "Продуктивність",
-    navMot:       "Мотивація",
-
-    // Hero
-    mainTitle:    "Ласкаво просимо в SyncOra",
-    subtitle:     "Ваша платформа для сучасної командної роботи",
-    heroDesc:     "Обʼєднуйте команди, керуйте проєктами, аналізуйте продуктивність і підтримуйте мотивацію співробітників. Створено для тих, хто прагне ефективності у віддаленій роботі.",
-    btnLearn:     "Докладніше",
-
-    // Можливості (features-intro)
-    featuresTitle:    "Наші можливості",
-    featuresSubtitle: "Все необхідне для ефективної командної роботи",
-
-    // Картки можливостей
-    taskTitle:   "Управління",
-    taskDesc:    "Планування і управління проєктами для максимальної організованості.",
-    commTitle:   "Комунікація",
-    commDesc:    "Швидкі чати, відеозустрічі та спільна робота над документами.",
-    perfTitle:   "Моніторинг продуктивності",
-    perfDesc:    "Трекінг часу, аналітика KPI та автоматичні звіти для прийняття рішень.",
-    motTitle:    "Мотивація",
-    motDesc:     "Підвищення залученості через гейміфікацію, нагороди та челенджі.",
-
-    // Page headers
-    pageTasksTitle:    "Управління",
-    pageTasksSubtitle: "Плануйте, організовуйте та керуйте завданнями вашої команди ефективно й прозоро.",
-    pageCommTitle:     "Комунікація",
-    pageCommSubtitle:  "Налаштуйте чати, відеозустрічі та обмін файлами для швидкої взаємодії.",
-    pagePerfTitle:     "Продуктивність",
-    pagePerfSubtitle:  "Відстежуйте ефективність команди в реальному часі та отримуйте аналітичні звіти.",
-    pageMotTitle:      "Мотивація",
-    pageMotSubtitle:   "Створюйте челенджі та нагороджуйте співробітників, щоб підтримувати їх ентузіазм.",
-
-    // Action buttons на підсторінках
-    actionCreateTask:      "Створити нове завдання",
-    actionStartComm:       "Почати комунікацію",
-    actionStartMonitoring: "Запустити моніторинг",
-    actionStartChallenge:  "Запустити челендж",
-
-    // Модалки
-    modalTaskTitle:   "Нове завдання",
-    modalTaskBtn:     "Додати завдання",
-    modalCommTitle:   "Нова комунікація",
-    modalCommBtn:     "Запустити чат",
-    modalReportTitle: "Звіт по продуктивності",
-    modalReportBtn:   "Згенерувати звіт",
-
-    // Форми
-    formTitleLabel:       "Назва",
-    formDescLabel:        "Опис",
-    formDeadlineLabel:    "Дедлайн",
-    formAssigneeLabel:    "Відповідальний",
-    formCommTypeLabel:    "Тип комунікації",
-    formCommWithLabel:    "Учасники",
-    formChallengeName:    "Назва челенджу",
-    formChallengeDesc:    "Опис челенджу",
-
-    // Список завдань
-    tasksListHeader: "Створені завдання",
-
-    // Футер
-    footerText:    "© 2025 SyncOra. Всі права захищені."
-  },
-  en: {
-    navHome:      "Home",
-    navTasks:     "Management",
-    navComm:      "Communication",
-    navPerf:      "Performance",
-    navMot:       "Motivation",
-
-    mainTitle:    "Welcome to SyncOra",
-    subtitle:     "Your platform for modern team collaboration",
-    heroDesc:     "Unite your teams, manage projects, analyze performance and keep motivation high. Built for those who strive for remote efficiency.",
-    btnLearn:     "Learn More",
-
-    featuresTitle:    "Our Features",
-    featuresSubtitle: "Everything you need for effective teamwork",
-
-    taskTitle:   "Management",
-    taskDesc:    "Project planning and task management for seamless workflows.",
-    commTitle:   "Communication",
-    commDesc:    "Fast chats, video meetings and document collaboration.",
-    perfTitle:   "Performance Monitoring",
-    perfDesc:    "Track time, analyze KPIs and auto-generate reports for decisions.",
-    motTitle:    "Motivation",
-    motDesc:     "Boost engagement with gamified challenges and rewards.",
-
-    pageTasksTitle:    "Management",
-    pageTasksSubtitle: "Plan, organize and manage your team’s tasks efficiently and transparently.",
-    pageCommTitle:     "Communication",
-    pageCommSubtitle:  "Set up chats, video calls and file sharing for seamless interaction.",
-    pagePerfTitle:     "Performance",
-    pagePerfSubtitle:  "Monitor your team’s performance in real time with detailed analytics.",
-    pageMotTitle:      "Motivation",
-    pageMotSubtitle:   "Create challenges and reward your team to keep motivation high.",
-
-    actionCreateTask:      "Create New Task",
-    actionStartComm:       "Start Communication",
-    actionStartMonitoring: "Start Monitoring",
-    actionStartChallenge:  "Start Challenge",
-
-    modalTaskTitle:   "New Task",
-    modalTaskBtn:     "Add Task",
-    modalCommTitle:   "New Communication",
-    modalCommBtn:     "Start Chat",
-    modalReportTitle: "Performance Report",
-    modalReportBtn:   "Generate Report",
-
-    formTitleLabel:       "Title",
-    formDescLabel:        "Description",
-    formDeadlineLabel:    "Deadline",
-    formAssigneeLabel:    "Assignee",
-    formCommTypeLabel:    "Type",
-    formCommWithLabel:    "Participants",
-    formChallengeName:    "Challenge Name",
-    formChallengeDesc:    "Challenge Description",
-
-    tasksListHeader:  "Created Tasks",
-
-    footerText:    "© 2025 SyncOra. All rights reserved."
-  }
-};
-
-// Далі у функції applyLanguage(lang) додаєте оновлення всіх цих елементів, наприклад:
-function applyLanguage(lang) {
-  const t = translations[lang];
-  if (!t) return;
-
-  // навігація
-  document.querySelector('nav .navigation ul li:nth-child(1) a').innerText = t.navHome;
-  document.querySelector('nav .navigation ul li:nth-child(2) a').innerText = t.navTasks;
-  document.querySelector('nav .navigation ul li:nth-child(3) a').innerText = t.navComm;
-  document.querySelector('nav .navigation ul li:nth-child(4) a').innerText = t.navPerf;
-  document.querySelector('nav .navigation ul li:nth-child(5) a').innerText = t.navMot;
-
-  // hero
-  document.getElementById('main-title').innerText   = t.mainTitle;
-  document.getElementById('subtitle').innerText    = t.subtitle;
-  document.getElementById('hero-description').innerText = t.heroDesc;
-  document.querySelector('.btn').innerText          = t.btnLearn;
-
-  // intro
-  document.querySelector('.section-title').innerText    = t.featuresTitle;
-  document.querySelector('.section-subtitle').innerText = t.featuresSubtitle;
-
-  // картки
-  document.getElementById('task-title').innerText = t.taskTitle;
-  document.getElementById('task-desc').innerText  = t.taskDesc;
-  document.getElementById('comm-title').innerText = t.commTitle;
-  document.getElementById('comm-desc').innerText  = t.commDesc;
-  document.getElementById('perf-title').innerText = t.perfTitle;
-  document.getElementById('perf-desc').innerText  = t.perfDesc;
-  document.getElementById('mot-title').innerText  = t.motTitle;
-  document.getElementById('mot-desc').innerText   = t.motDesc;
-
-  // підсторінки (якщо вони є в DOM)
-  const pageTitle = document.querySelector('.page-title h1');
-  const pageSub  = document.querySelector('.page-subtitle');
-  if (pageTitle && pageSub) {
-    // визначаємо за класом body або іншою ознакою, на якій сторінці ми
-    const page = document.body.dataset.page; // наприклад <body data-page="tasks">
-    if (page === 'tasks') {
-      pageTitle.innerText = t.pageTasksTitle;
-      pageSub.innerText   = t.pageTasksSubtitle;
-      document.querySelector('.task-action .btn-large').innerText = t.actionCreateTask;
-    }
-    if (page === 'communication') {
-      pageTitle.innerText = t.pageCommTitle;
-      pageSub.innerText   = t.pageCommSubtitle;
-      document.querySelector('.communication-action .btn-large').innerText = t.actionStartComm;
-    }
-    if (page === 'performance') {
-      pageTitle.innerText = t.pagePerfTitle;
-      pageSub.innerText   = t.pagePerfSubtitle;
-      document.querySelector('.performance-action .btn-large').innerText = t.actionStartMonitoring;
-    }
-    if (page === 'motivation') {
-      pageTitle.innerText = t.pageMotTitle;
-      pageSub.innerText   = t.pageMotSubtitle;
-      document.querySelector('.motivation-action .btn-large').innerText = t.actionStartChallenge;
-    }
-  }
-
-  // модалки
-  const mod = document.getElementById('taskModal');
-  if (mod) {
-    document.querySelector('#taskModal .modal-content h2').innerText = t.modalTaskTitle;
-    document.querySelector('#taskForm button').innerText             = t.modalTaskBtn;
-  }
-  // та аналогічно для інших модалок...
-
-  // список завдань
-  const listH = document.querySelector('.task-list h2');
-  if (listH) listH.innerText = t.tasksListHeader;
-
-  // футер
-  document.querySelector('footer p').innerText = t.footerText;
-
-  // оновлюємо текст кнопки перемикання
-  document.getElementById('lang-toggle').innerText = (lang === 'uk' ? 'Укр' : 'En');
+// 🔔 Надсилання в Slack при створенні задачі / челенджу
+async function notifySlack(message) {
+  await fetch("https://hooks.slack.com/services/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", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ text: message })
+  });
 }
 
-// —————— ГАМБУРГЕР-МЕНЮ ——————
-function toggleMenu() {
-  const navList = document.querySelector('.navigation ul');
-  if (navList) navList.classList.toggle('show');
+import { db, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot } from './firebase-config.js';
+
+const tasksRef = collection(db, 'tasks');
+
+async function loadTasks() {
+  const container = document.getElementById('tasksContainer');
+  container.innerHTML = '';
+  const snapshot = await getDocs(tasksRef);
+  snapshot.forEach(docSnap => {
+    const task = docSnap.data();
+    renderTask(task, docSnap.id);
+  });
 }
 
-// —————— МОДАЛЬНІ ВІКНА ——————
-function openModal(id) {
-  document.getElementById(id).style.display = 'block';
-}
-function closeModal(id) {
-  document.getElementById(id).style.display = 'none';
+function renderTask(task, id) {
+  const li = document.createElement('li');
+  li.className = 'task-item';
+  li.innerHTML = `
+    <h3>${task.title}</h3>
+    <p>${task.desc}</p>
+    <p><strong>Дедлайн:</strong> ${task.deadline}</p>
+    <p><strong>Виконавець:</strong> ${task.assignee}</p>
+    <button onclick="deleteTask('${id}')">Видалити</button>
+  `;
+  document.getElementById('tasksContainer').appendChild(li);
 }
 
-// —————— ОБРОБКА ВІКОН ПРИ КЛІКУ ПО ЗОВНІ ——————
-window.addEventListener('click', event => {
-  ['reportModal', 'taskModal', 'challengeModal'].forEach(id => {
-    const modal = document.getElementById(id);
-    if (modal && event.target === modal) {
-      modal.style.display = 'none';
-    }
+async function deleteTask(id) {
+  await deleteDoc(doc(db, "tasks", id));
+}
+
+// Форма додавання
+document.getElementById('taskForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const title = document.getElementById('taskTitle').value;
+  const desc = document.getElementById('taskDescription').value;
+  const deadline = document.getElementById('taskDeadline').value;
+  const assignee = document.getElementById('taskAssignee').value;
+
+  await addDoc(tasksRef, { title, desc, deadline, assignee });
+  await notifySlack(`🆕 Нова задача: "${title}" від ${user.name}`);
+
+  e.target.reset();
+});
+
+// Live-оновлення
+onSnapshot(tasksRef, snapshot => {
+  const container = document.getElementById('tasksContainer');
+  container.innerHTML = '';
+  snapshot.forEach(docSnap => {
+    const task = docSnap.data();
+    renderTask(task, docSnap.id);
   });
 });
 
-// —————— ОБРОБКА ФОРМИ НА СТОРІНЦІ ЗАВДАНЬ ——————
-document.addEventListener('DOMContentLoaded', () => {
-  // гамбургер
-  const burger = document.querySelector('.menu-toggle');
-  if (burger) burger.addEventListener('click', toggleMenu);
+// Firebase логіка для мотивації (challenges)
+import { db, collection, addDoc, deleteDoc, doc, onSnapshot } from './firebase-config.js';
 
-  // форма задач
-  const taskForm = document.getElementById('taskForm');
-  if (taskForm) {
-    taskForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const title       = document.getElementById('taskTitle').value;
-      const description = document.getElementById('taskDescription').value;
-      const deadline    = document.getElementById('taskDeadline').value;
-      const assignee    = document.getElementById('taskAssignee').value;
+const challengesRef = collection(db, 'challenges');
 
-      // TODO: тут можна додати логіку збереження чи рендерингу списку
-      alert(`Завдання "${title}" створено успішно!`);
-
-      closeModal('taskModal');
-      taskForm.reset();
+const user = JSON.parse(localStorage.getItem('loggedInUser'));
+if (!user) {
+  alert("Увійдіть у акаунт.");
+} else {
+  onSnapshot(challengesRef, snapshot => {
+    const container = document.getElementById('challengesContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    snapshot.forEach(docSnap => {
+      const c = docSnap.data();
+      if (c.email === user.email) {
+        const item = document.createElement('li');
+        item.className = 'challenge-item';
+        item.innerHTML = `
+          <h3>${c.title}</h3>
+          <p>${c.desc}</p>
+          <p><strong>Дедлайн:</strong> ${c.deadline}</p>
+          <button onclick="deleteChallengeFirebase('${docSnap.id}')"
+            style="margin-top:10px;padding:6px 12px;border:none;border-radius:6px;background:#ff4d4f;color:#fff;cursor:pointer;">Видалити</button>`;
+        container.appendChild(item);
+      }
     });
-  }
-
-  // форма звітів
-  const reportForm = document.getElementById('reportForm');
-  if (reportForm) {
-    reportForm.addEventListener('submit', e => {
-      e.preventDefault();
-      // аналогічно обробити звіт
-      alert('Звіт відправлено!');
-      closeModal('reportModal');
-      reportForm.reset();
-    });
-  }
-
-  // форма челенджів
-  const challengeForm = document.getElementById('challengeForm');
-  if (challengeForm) {
-    challengeForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const title = document.getElementById('challengeTitle').value;
-      alert(`Челендж "${title}" створено!`);
-      closeModal('challengeModal');
-      challengeForm.reset();
-    });
-  }
-});
-// бургер-меню
-function toggleMenu() {
-  const navList = document.querySelector('.navigation ul');
-  if (navList) {
-    navList.classList.toggle('show');
-  }
+  });
 }
 
-// прив’язка обробника після завантаження DOM
-document.addEventListener('DOMContentLoaded', () => {
-  const burger = document.querySelector('.menu-toggle');
-  if (burger) {
-    burger.addEventListener('click', toggleMenu);
-  }
+window.deleteChallengeFirebase = async function(id) {
+  await deleteDoc(doc(db, 'challenges', id));
+};
+
+document.getElementById('challengeForm')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const title = document.getElementById('challengeTitle').value;
+  const desc = document.getElementById('challengeDescription').value;
+  const deadline = document.getElementById('challengeDeadline').value;
+  await addDoc(challengesRef, { title, desc, deadline, email: user.email });
+  await notifySlack(`🏁 Новий челендж: "${title}" від ${user.name}`);
+
+  document.getElementById('challengeForm').reset();
+  document.getElementById('challengeModal').style.display = 'none';
 });
+
+// Firebase логіка для reports (performance)
+import { db, collection, addDoc, onSnapshot } from './firebase-config.js';
+
+const reportsRef = collection(db, 'reports');
+const user = JSON.parse(localStorage.getItem('loggedInUser'));
+if (!user) {
+  alert("Увійдіть у акаунт.");
+} else {
+  onSnapshot(reportsRef, snapshot => {
+    const reports = [];
+    snapshot.forEach(docSnap => {
+      const r = docSnap.data();
+      if (r.email === user.email) reports.push(r);
+    });
+    drawChart(reports);
+  });
+}
+
+function drawChart(data) {
+  const ctx = document.getElementById('reportChart').getContext('2d');
+  ctx.clearRect(0, 0, 600, 300);
+  const weekly = data.filter(d => d.type === 'Щотижневий').length;
+  const monthly = data.filter(d => d.type === 'Щомісячний').length;
+  const personal = data.filter(d => d.type === 'Особистий').length;
+
+  const bars = [weekly, monthly, personal];
+  const labels = ['Щотижневі', 'Щомісячні', 'Особисті'];
+  const colors = ['#0077ff', '#00c853', '#ff6f00'];
+
+  bars.forEach((value, i) => {
+    ctx.fillStyle = colors[i];
+    ctx.fillRect(i * 200 + 50, 250 - value * 20, 100, value * 20);
+    ctx.fillStyle = '#333';
+    ctx.textAlign = 'center';
+    ctx.fillText(labels[i], i * 200 + 100, 270);
+    ctx.fillText(value, i * 200 + 100, 240 - value * 20);
+  });
+}
+
+// Firebase логіка для зустрічей (notes)
+import { db, collection, addDoc, deleteDoc, onSnapshot, doc } from './firebase-config.js';
+
+const notesRef = collection(db, 'notes');
+const user = JSON.parse(localStorage.getItem('loggedInUser'));
+if (!user) {
+  alert("Увійдіть у акаунт.");
+} else {
+  onSnapshot(notesRef, snapshot => {
+    const table = document.getElementById('meetingTable');
+    if (!table) return;
+    table.innerHTML = '';
+    snapshot.forEach(docSnap => {
+      const m = docSnap.data();
+      if (m.email === user.email) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${m.topic}</td><td>${m.date}</td><td>${m.contact}</td>
+        <td><button onclick="deleteMeetingFirebase('${docSnap.id}')" style="padding:4px 8px;background:#ff4d4f;color:white;border:none;border-radius:6px;">✕</button></td>`;
+        table.appendChild(row);
+      }
+    });
+  });
+}
+
+window.deleteMeetingFirebase = async function(id) {
+  await deleteDoc(doc(db, 'notes', id));
+};
+
+document.getElementById('meetingForm')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const topic = document.getElementById('meetingTopic').value;
+  const date = document.getElementById('meetingDate').value;
+  const contact = document.getElementById('meetingContact').value;
+  await addDoc(notesRef, { topic, date, contact, email: user.email });
+  e.target.reset();
+});
+
+// === GOOGLE CALENDAR OAUTH2 + EVENT CREATION ===
+const googleBtn = document.getElementById('googleCalendarBtn');
+if (googleBtn) {
+  googleBtn.addEventListener('click', () => {
+    const topic = document.getElementById('meetingTopic').value;
+    const date = document.getElementById('meetingDate').value;
+    const contact = document.getElementById('meetingContact').value;
+    const desc = document.getElementById('meetingAction')?.value || 'Зустріч команди';
+
+    if (!topic || !date || !contact) {
+      alert("Заповніть форму зустрічі перед додаванням у Google Calendar.");
+      return;
+    }
+
+    const startDateTime = new Date(date + 'T10:00:00'); // За замовчуванням 10:00
+    const endDateTime = new Date(date + 'T11:00:00');
+
+    const params = new URLSearchParams({
+      text: topic,
+      details: desc + ' — Контакт: ' + contact,
+      dates: `${startDateTime.toISOString().replace(/[-:]|\.\d{3}/g, "")}/${endDateTime.toISOString().replace(/[-:]|\.\d{3}/g, "")}`,
+      location: "Online",
+    });
+
+    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&${params.toString()}&pli=1`;
+
+    window.open(calendarUrl, '_blank');
+  });
+}
+
+// 🎥 Jitsi Meet Integration
+const startBtn = document.getElementById('startVideoBtn');
+if (startBtn) {
+  startBtn.addEventListener('click', () => {
+    const topic = document.getElementById('meetingTopic').value.trim();
+    const date = document.getElementById('meetingDate').value;
+    if (!topic || !date) {
+      alert("Введіть тему та дату для створення кімнати.");
+      return;
+    }
+
+    const roomId = "syncora_" + topic.replace(/\s+/g, '_') + "_" + date.replace(/-/g, '');
+    const iframe = document.getElementById('videoFrame');
+    const container = document.getElementById('videoMeetingContainer');
+    iframe.src = "https://meet.jit.si/" + roomId;
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: "smooth" });
+  });
+}

@@ -1,78 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Комунікація — SyncOra</title>
-
-  <!-- Підключення шрифтів і стилів -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Вбудовані стилі для модалки -->
-  <style>
-    /* Стилі для модалки */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-content {
-      background: #fff;
-      width: 90%;
-      max-width: 480px;
-      border-radius: 16px;
-      padding: 30px 20px;
-      position: relative;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    }
-    .modal-content .close {
-      position: absolute;
-      top: 16px; right: 16px;
-      font-size: 24px;
-      color: #888;
-      cursor: pointer;
-    }
-    .modal-content .close:hover {
-      color: #444;
-    }
-    #communicationForm input,
-    #communicationForm select {
-      width: 100%;
-      margin-bottom: 16px;
-      padding: 12px 14px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      font-family: 'Poppins', sans-serif;
-    }
-    #communicationForm button {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      border: none;
-      border-radius: 30px;
-      background: #0077ff;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0,119,255,0.3);
-      transition: transform .2s, box-shadow .2s;
-    }
-    #communicationForm button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0,92,193,0.4);
-    }
-  </style>
-
-  <!-- Скрипт перекладів і бургер-меню -->
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Комунікація — SyncOra</title>
+<!-- Підключення шрифтів і стилів -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&amp;family=Urbanist:wght@400;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+<!-- Вбудовані стилі для модалки -->
+<!-- Скрипт перекладів і бургер-меню -->
+<script>
     let currentLang = 'uk';
     const translations = {
       uk: {
@@ -180,93 +118,231 @@
         });
     });
   </script>
+<!-- AOS CSS -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(to bottom, #f5f7fa, #ffffff);
+    color: #111;
+  }
+  .page-header {
+    background: url('images/communication-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+  h1, h2, h3 {
+    font-weight: 700;
+    text-align: center;
+    color: #111;
+  }
+  button, .btn, .btn-large {
+    background: #007aff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
+    transition: background 0.3s ease;
+  }
+  button:hover, .btn:hover {
+    background: #005fce;
+  }
+  input, select, textarea {
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  table th, table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  table th {
+    background: #f9fafb;
+  }
+  table tr:hover {
+    background: #f1f3f5;
+  }
+  #meetingScheduler {
+    padding: 40px;
+    background: #fff;
+    border-radius: 16px;
+    max-width: 800px;
+    margin: 40px auto;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+  }
+</style>
 
-  <!-- AOS CSS -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script>
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  if (!user) window.location.href = 'login.html';
+</script>
+
 </head>
-
 <body data-page="communication">
+<!-- Header -->
+<header class="site-header">
+<div class="nav">
+<div class="logo">
+<a href="index.html"><img alt="SyncOra Logo" src="images/logo.png"/></a>
+</div>
+<div aria-label="Toggle menu" class="menu-toggle">
+<span></span><span></span><span></span>
+</div>
+<nav class="navigation">
+<ul>
+<li><a href="index.html">Головна</a></li>
+<li><a href="tasks.html">Управління</a></li>
+<li><a class="active" href="communication.html">Комунікація</a></li>
+<li><a href="performance.html">Продуктивність</a></li>
+<li><a href="motivation.html">Мотивація</a></li>
+</ul>
+</nav>
+<div class="controls">
+<button class="lang-toggle" id="lang-toggle" style="color: #111; font-weight: 500;">Укр</button>
+</div>
+</div>
+</header>
+<!-- Hero -->
+<section class="page-header" style="background-image: url('images/communication-background.jpg');">
+<div class="page-title" data-aos="fade-up">
+<h1>Комунікація</h1>
+<p class="page-subtitle">Будьте на зв'язку зі своєю командою через чати, відеоконференції та спільні документи.</p>
+</div>
+</section>
+<!-- Features -->
+<main id="communication">
+<section class="communication-features" data-aos="fade-up">
+<div class="communication-feature" data-aos="zoom-in">
+<h3>Чат у реальному часі</h3>
+<p>Спілкуйтеся без затримок за допомогою командних чатів у режимі реального часу.</p>
+</div>
+<div class="communication-feature" data-aos="zoom-in" data-aos-delay="100">
+<h3>Відеоконференції</h3>
+<p>Проводьте відеозустрічі без складних налаштувань і додаткових додатків.</p>
+</div>
+<div class="communication-feature" data-aos="zoom-in" data-aos-delay="200">
+<h3>Спільна робота над документами</h3>
+<p>Редагуйте документи разом, бачачи зміни одразу.</p>
+</div>
+</section>
+<div class="communication-action" data-aos="fade-up">
+<a class="btn-large" href="#" id="openCommBtn">Почати комунікацію</a>
+</div>
+</main>
+<!-- Modal -->
+<div class="modal" id="communicationModal">
+<div class="modal-content" data-aos="zoom-in">
+<span class="close">×</span>
+<h2>Нова комунікація</h2>
+<form id="communicationForm">
+<input id="chatTopic" placeholder="Тема розмови" required="" type="text"/>
+<select id="communicationType" required="">
+<option value="">Тип комунікації</option>
+<option value="chat">Чат</option>
+<option value="video">Відеоконференція</option>
+</select>
+<button class="btn" type="submit">Розпочати</button>
+</form>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="nav">
-      <div class="logo">
-        <a href="index.html"><img src="images/logo.png" alt="SyncOra Logo"></a>
-      </div>
-      <div class="menu-toggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </div>
-      <nav class="navigation">
-        <ul>
-          <li><a href="index.html">Головна</a></li>
-          <li><a href="tasks.html">Управління</a></li>
-          <li><a href="communication.html" class="active">Комунікація</a></li>
-          <li><a href="performance.html">Продуктивність</a></li>
-          <li><a href="motivation.html">Мотивація</a></li>
-        </ul>
-      </nav>
-      <div class="controls">
-        <button id="lang-toggle" class="lang-toggle">Укр</button>
-      </div>
-    </div>
-  </header>
+<div style="text-align:center; margin-top: 20px;">
+  <button id="googleCalendarBtn" type="button" style="padding: 10px 20px; background: #4285F4; color: white; border: none; border-radius: 8px; font-weight: 600;">
+    Додати до Google Calendar
+  </button>
+</div>
 
-  <!-- Hero -->
-  <section class="page-header" style="background-image: url('images/communication-background.jpg');">
-    <div class="page-title" data-aos="fade-up">
-      <h1>Комунікація</h1>
-      <p class="page-subtitle">Будьте на зв'язку зі своєю командою через чати, відеоконференції та спільні документи.</p>
-    </div>
-  </section>
+</div>
+</div>
+<!-- Footer -->
 
-  <!-- Features -->
-  <main id="communication">
-    <section class="communication-features" data-aos="fade-up">
-      <div class="communication-feature" data-aos="zoom-in">
-        <h3>Чат у реальному часі</h3>
-        <p>Спілкуйтеся без затримок за допомогою командних чатів у режимі реального часу.</p>
-      </div>
-      <div class="communication-feature" data-aos="zoom-in" data-aos-delay="100">
-        <h3>Відеоконференції</h3>
-        <p>Проводьте відеозустрічі без складних налаштувань і додаткових додатків.</p>
-      </div>
-      <div class="communication-feature" data-aos="zoom-in" data-aos-delay="200">
-        <h3>Спільна робота над документами</h3>
-        <p>Редагуйте документи разом, бачачи зміни одразу.</p>
-      </div>
-    </section>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; max-width: 1200px; margin: 60px auto; flex-wrap: wrap;"><div style="flex: 1;"><section id="meetingScheduler" style="margin: 40px 20px;">
+<h2 style="text-align:center;">Планувальник зустрічей</h2>
+<form id="meetingForm" style="margin: 40px auto; display: grid; gap: 16px; grid-template-columns: 1fr 1fr; max-width: 700px;background: white; padding: 40px; border-radius: 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.1);">
+<input id="meetingTopic" placeholder="Тема зустрічі" required="" style="width: 100%;" type="text"/>
+<input id="meetingAction" placeholder="Дія" required="" style="width: 100%;" type="text"/><input id="meetingDate" required="" style="width: 100%;" type="date"/>
+<input id="meetingContact" placeholder="Контакт (email або ім’я)" required="" style="width: 100%;" type="text"/>
+<button style="grid-column: span 2;" type="submit">Додати зустріч</button>
+</form>
 
-    <div class="communication-action" data-aos="fade-up">
-      <a href="#" id="openCommBtn" class="btn-large">Почати комунікацію</a>
-    </div>
-  </main>
+<div style="text-align:center; margin-top: 20px;">
+  <button id="googleCalendarBtn" type="button" style="padding: 10px 20px; background: #4285F4; color: white; border: none; border-radius: 8px; font-weight: 600;">
+    Додати до Google Calendar
+  </button>
+</div>
 
-  <!-- Modal -->
-  <div id="communicationModal" class="modal">
-    <div class="modal-content" data-aos="zoom-in">
-      <span class="close">&times;</span>
-      <h2>Нова комунікація</h2>
-      <form id="communicationForm">
-        <input type="text" id="chatTopic" placeholder="Тема розмови" required>
-        <select id="communicationType" required>
-          <option value="">Тип комунікації</option>
-          <option value="chat">Чат</option>
-          <option value="video">Відеоконференція</option>
-        </select>
-        <button type="submit" class="btn">Розпочати</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 SyncOra. Всі права захищені.</p>
-  </footer>
-
-  <!-- Скрипти -->
-  <script src="script.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
+<table border="1" style="width:100%;max-width:800px;margin:auto;border-collapse:collapse;">
+<thead>
+<tr style="background:#f0f0f0;">
+<th>Тема</th><th>Дата</th><th>Контакт</th><th>Дії</th>
+</tr>
+</thead>
+<tbody id="meetingTable"></tbody>
+</table>
+</section></div><div style="flex: 1;">
+<div style="background:#fff;padding:40px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.05);text-align:center;">
+<h3>Інформація</h3>
+<p>Зустрічі — це ключ до синхронізації команди. Додайте події, дію та контактну особу для зручного планування.</p>
+<img alt="Calendar" src="images/calendar.png" style="max-width:80%;margin-top:20px;"/>
+</div>
+</div></div><footer>
+<p>© 2025 SyncOra. Всі права захищені.</p>
+</footer>
+<!-- Скрипти -->
+<script src="lang.js"></script>
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="script.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+function loadMeetings() {
+  const table = document.getElementById('meetingTable');
+  table.innerHTML = '';
+  const meetings = JSON.parse(localStorage.getItem('meetings')) || [];
+  meetings.forEach((m, i) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${m.topic}</td><td>${m.date}</td><td>${m.contact}</td>
+    <td><button onclick="deleteMeeting(${i})" style="padding:4px 8px;background:#ff4d4f;color:white;border:none;border-radius:6px;">✕</button></td>`;
+    table.appendChild(row);
+  });
+}
+function saveMeeting(meeting) {
+  const meetings = JSON.parse(localStorage.getItem('meetings')) || [];
+  meetings.push(meeting);
+  localStorage.setItem('meetings', JSON.stringify(meetings));
+  loadMeetings();
+}
+function deleteMeeting(index) {
+  const meetings = JSON.parse(localStorage.getItem('meetings')) || [];
+  meetings.splice(index, 1);
+  localStorage.setItem('meetings', JSON.stringify(meetings));
+  loadMeetings();
+}
+document.getElementById('meetingForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const topic = document.getElementById('meetingTopic').value;
+  const date = document.getElementById('meetingDate').value;
+  const contact = document.getElementById('meetingContact').value;
+  saveMeeting({ topic, date, contact });
+  e.target.reset();
+});
+document.addEventListener('DOMContentLoaded', loadMeetings);
+</script><script>
     // Ініціалізація AOS
     AOS.init({ duration: 1000, once: true });
 
