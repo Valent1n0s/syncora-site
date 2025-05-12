@@ -471,5 +471,427 @@ document.addEventListener('DOMContentLoaded', () => {
       e.target.reset();
     });
   </script>
+
+<!-- Рейтинг користувачів -->
+<section style="max-width:1000px;margin:60px auto;text-align:center;">
+  <h2>Рейтинг виконавців</h2>
+  <table style="width:100%;border-collapse:collapse;margin-top:20px;">
+    <thead><tr style="background:#f0f0f0;"><th>Email</th><th>Завдань виконано</th></tr></thead>
+    <tbody id="taskRankings"></tbody>
+  </table>
+</section>
+<script>
+function updateTaskRanking() {
+  const tbody = document.getElementById('taskRankings');
+  tbody.innerHTML = '';
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const countByUser = {};
+
+  tasks.forEach(t => {
+    if (t.status === 'Done') {
+      const user = t.assignee || 'невідомо';
+      countByUser[user] = (countByUser[user] || 0) + 1;
+    }
+  });
+
+  Object.entries(countByUser).sort((a,b)=>b[1]-a[1]).forEach(([email, count]) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${email}</td><td>${count}</td>`;
+    tbody.appendChild(row);
+  });
+}
+document.addEventListener('DOMContentLoaded', updateTaskRanking);
+</script>
+
+<!-- Календар дедлайнів -->
+<section style="max-width:1000px;margin:60px auto;">
+  <h2 style="text-align:center;">Календар дедлайнів</h2>
+  <canvas id="taskCalendarChart" height="200"></canvas>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('taskCalendarChart').getContext('2d');
+  const data = JSON.parse(localStorage.getItem('tasks')) || [];
+  const days = {};
+
+  data.forEach(task => {
+    const date = task.deadline || 'невідомо';
+    days[date] = (days[date] || 0) + 1;
+  });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(days),
+      datasets: [{
+        label: 'Кількість дедлайнів',
+        data: Object.values(days),
+        backgroundColor: '#0077ff'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+});
+</script>
+
+<!-- Кнопка push-нагадування -->
+<section style="text-align:center;margin:40px auto;">
+  <button class="btn-large" onclick="alert('🔔 Push-нагадування активовано!')">Нагадати про дедлайн</button>
+</section>
+
+<!-- Профіль виконавця -->
+<section style="max-width:800px;margin:60px auto;">
+  <h2 style="text-align:center;">Ваш профіль</h2>
+  <form onsubmit="saveTaskProfile(event)" style="display:grid;gap:16px;max-width:400px;margin:auto;">
+    <input type="text" id="taskProfileName" placeholder="Ім’я" required />
+    <input type="email" id="taskProfileEmail" placeholder="Email" required />
+    <button class="btn-large" type="submit">Зберегти</button>
+  </form>
+</section>
+<script>
+function saveTaskProfile(e) {
+  e.preventDefault();
+  const name = document.getElementById('taskProfileName').value;
+  const email = document.getElementById('taskProfileEmail').value;
+  localStorage.setItem('taskUser', JSON.stringify({ name, email }));
+  alert('Профіль збережено!');
+}
+</script>
+
+
+<!-- SVG-анімація статусу -->
+<section style="text-align:center;margin:60px auto;">
+  <h2>Анімований статус SyncOra</h2>
+  <svg width="160" height="160" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" stroke="#007aff" stroke-width="4" fill="none"/>
+    <circle cx="50" cy="50" r="30" stroke="#00c853" stroke-width="5" fill="none">
+      <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
+        dur="5s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+</section>
+
+<!-- Canvas таймлайн -->
+<section style="text-align:center;margin:60px auto;">
+  <h2>Таймлайн завдань</h2>
+  <canvas id="taskTimeline" width="500" height="120" style="border:1px solid #ccc;"></canvas>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('taskTimeline');
+  const ctx = canvas.getContext('2d');
+  const data = JSON.parse(localStorage.getItem('tasks')) || [];
+  let x = 10;
+  data.forEach((task, i) => {
+    const y = 20 + (i % 5) * 20;
+    ctx.fillStyle = task.status === 'Done' ? '#00c853' : '#ffab00';
+    ctx.fillRect(x, y, 10, 10);
+    ctx.fillText(task.title.slice(0,10), x + 15, y + 10);
+    x += 120;
+  });
+});
+</script>
+
+<!-- Автоматичне створення задачі -->
+<section style="text-align:center;margin:60px auto;">
+  <button class="btn-large" onclick="addDailyTask()">📌 Додати щоденну задачу</button>
+</section>
+<script>
+function addDailyTask() {
+  const task = {
+    title: 'Щоденна перевірка',
+    desc: 'Звірити прогрес команди',
+    deadline: new Date().toISOString().split('T')[0],
+    assignee: 'автоматично',
+    status: 'ToDo'
+  };
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  tasks.push(task);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  alert('Задачу додано!');
+  location.reload();
+}
+</script>
+
+<!-- Фільтр за виконавцем -->
+<section style="text-align:center;margin:40px auto;">
+  <input id="assigneeFilter" placeholder="Фільтр за виконавцем" style="padding:10px;border-radius:8px;border:1px solid #ccc;" />
+  <button onclick="filterByAssignee()" class="btn-large">Фільтрувати</button>
+</section>
+<script>
+function filterByAssignee() {
+  const name = document.getElementById('assigneeFilter').value.toLowerCase();
+  const container = document.getElementById('tasksContainer');
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  container.innerHTML = '';
+  tasks.filter(t => t.assignee?.toLowerCase().includes(name)).forEach((task, index) => {
+    const li = document.createElement('li');
+    li.className = 'task-item';
+    li.innerHTML = `
+      <h3>${task.title}</h3>
+      <p>${task.desc}</p>
+      <p><strong>Дедлайн:</strong> ${task.deadline}</p>
+      <p><strong>Виконавець:</strong> ${task.assignee}</p>
+      <p><strong>Статус:</strong> ${task.status || 'ToDo'}</p>
+    `;
+    container.appendChild(li);
+  });
+}
+</script>
+
+
+<!-- Графік статусів -->
+<section style="max-width:1000px;margin:60px auto;">
+  <h2 style="text-align:center;">Розподіл завдань за статусом</h2>
+  <canvas id="statusChart" height="200"></canvas>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('statusChart').getContext('2d');
+  const data = JSON.parse(localStorage.getItem('tasks')) || [];
+  let todo = 0, inProgress = 0, done = 0;
+  data.forEach(t => {
+    const status = t.status || 'ToDo';
+    if (status === 'ToDo') todo++;
+    else if (status === 'In Progress') inProgress++;
+    else if (status === 'Done') done++;
+  });
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['To Do', 'In Progress', 'Done'],
+      datasets: [{
+        data: [todo, inProgress, done],
+        backgroundColor: ['#fdd835', '#42a5f5', '#66bb6a']
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+});
+</script>
+
+<!-- Бейджі -->
+<section style="max-width:800px;margin:60px auto;text-align:center;">
+  <h2>Досягнення</h2>
+  <div id="badgeBoard" style="font-size:24px;"></div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const doneCount = tasks.filter(t => t.status === 'Done').length;
+  const el = document.getElementById('badgeBoard');
+  if (doneCount >= 10) el.textContent = '🏅 Виконано 10+ задач — Молодець!';
+  else if (doneCount >= 5) el.textContent = '⭐ Виконано 5 задач!';
+});
+</script>
+
+<!-- Звук при виконанні -->
+<audio id="doneSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_659f2e89cf.mp3" preload="auto"></audio>
+<script>
+function playDoneSound() {
+  document.getElementById('doneSound').play();
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  if (tasks.some(t => t.status === 'Done')) playDoneSound();
+});
+</script>
+
+<!-- Панель швидких дій -->
+<section style="text-align:center;margin:40px auto;">
+  <h2>Швидкі дії</h2>
+  <button class="btn-large" onclick="markAllDone()">✅ Завершити всі</button>
+  <button class="btn-large" onclick="clearCompleted()">🧹 Очистити завершені</button>
+</section>
+<script>
+function markAllDone() {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  tasks.forEach(t => t.status = 'Done');
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  location.reload();
+}
+function clearCompleted() {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const active = tasks.filter(t => t.status !== 'Done');
+  localStorage.setItem('tasks', JSON.stringify(active));
+  location.reload();
+}
+</script>
+
+
+<!-- Перетягування задач -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('tasksContainer');
+  container.querySelectorAll('.task-item').forEach(el => {
+    el.setAttribute('draggable', 'true');
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', e.target.innerHTML);
+      e.target.style.opacity = '0.5';
+    });
+    el.addEventListener('dragend', e => {
+      e.target.style.opacity = '';
+    });
+  });
+
+  container.addEventListener('dragover', e => e.preventDefault());
+  container.addEventListener('drop', e => {
+    e.preventDefault();
+    const html = e.dataTransfer.getData('text/plain');
+    const dropEl = document.createElement('li');
+    dropEl.className = 'task-item';
+    dropEl.innerHTML = html;
+    container.appendChild(dropEl);
+  });
+});
+</script>
+
+<!-- Тижневий планер -->
+<section style="max-width:1000px;margin:60px auto;">
+  <h2 style="text-align:center;">Тижневий план</h2>
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;">
+    <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+    <div id="d1"></div><div id="d2"></div><div id="d3"></div><div id="d4"></div><div id="d5"></div><div id="d6"></div><div id="d7"></div>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const days = ['d1','d2','d3','d4','d5','d6','d7'];
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  tasks.forEach(t => {
+    const dayIndex = new Date(t.deadline).getDay();
+    const box = document.getElementById('d' + (dayIndex || 7));
+    if (box) {
+      const el = document.createElement('div');
+      el.style = 'margin-top:6px;padding:4px;background:#e3f2fd;border-radius:6px;';
+      el.textContent = t.title.slice(0, 15);
+      box.appendChild(el);
+    }
+  });
+});
+</script>
+
+<!-- Вкладки за проєктами -->
+<section style="max-width:1000px;margin:60px auto;">
+  <h2 style="text-align:center;">Проєкти</h2>
+  <div id="projectTabs" style="display:flex;gap:10px;justify-content:center;"></div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const projects = [...new Set(tasks.map(t => t.project || 'Без проєкту'))];
+  const tabBar = document.getElementById('projectTabs');
+  projects.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-large';
+    btn.textContent = p;
+    btn.onclick = () => {
+      const filtered = tasks.filter(t => (t.project || 'Без проєкту') === p);
+      const container = document.getElementById('tasksContainer');
+      container.innerHTML = '';
+      filtered.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        li.innerHTML = `<h3>${task.title}</h3><p>${task.desc}</p><p><strong>Дедлайн:</strong> ${task.deadline}</p><p><strong>Виконавець:</strong> ${task.assignee}</p><p><strong>Статус:</strong> ${task.status || 'ToDo'}</p>`;
+        container.appendChild(li);
+      });
+    };
+    tabBar.appendChild(btn);
+  });
+});
+</script>
+
+<!-- Підзадачі -->
+<section style="max-width:800px;margin:60px auto;text-align:center;">
+  <h2>Підзадачі</h2>
+  <form onsubmit="addSubtask(event)">
+    <input type="text" id="subtaskText" placeholder="Підзадача до останньої задачі" style="padding:10px;width:60%;border-radius:6px;border:1px solid #ccc;" required />
+    <button class="btn-large" type="submit">➕ Додати</button>
+  </form>
+  <ul id="subtaskList" style="margin-top:20px;"></ul>
+</section>
+<script>
+function addSubtask(e) {
+  e.preventDefault();
+  const text = document.getElementById('subtaskText').value;
+  const key = 'subtasks_' + (localStorage.getItem('tasks')?.length || 0);
+  const all = JSON.parse(localStorage.getItem(key)) || [];
+  all.push(text);
+  localStorage.setItem(key, JSON.stringify(all));
+  document.getElementById('subtaskText').value = '';
+  renderSubtasks();
+}
+function renderSubtasks() {
+  const key = 'subtasks_' + (localStorage.getItem('tasks')?.length || 0);
+  const all = JSON.parse(localStorage.getItem(key)) || [];
+  const ul = document.getElementById('subtaskList');
+  ul.innerHTML = '';
+  all.forEach(t => {
+    const li = document.createElement('li');
+    li.textContent = t;
+    ul.appendChild(li);
+  });
+}
+document.addEventListener('DOMContentLoaded', renderSubtasks);
+</script>
+
+
+<!-- PDF-експорт задач -->
+<section style="text-align:center;margin:60px auto;">
+  <button class="btn-large" onclick="downloadTasksPDF()">📄 Експортувати задачі в PDF</button>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+async function downloadTasksPDF() {
+  const {{ jsPDF }} = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(14);
+  doc.text("Список задач", 20, 20);
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  let y = 30;
+  tasks.forEach(t => {
+    doc.text(`• ${t.title} | ${t.status || 'ToDo'} | ${t.assignee}`, 20, y);
+    y += 10;
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
+  });
+  doc.save("tasks.pdf");
+}
+</script>
+
+<!-- Перегляд задач усіх користувачів -->
+<section style="max-width:800px;margin:60px auto;text-align:center;">
+  <h2>Користувачі та задачі</h2>
+  <div id="allUsersTasks"></div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  const byUser = {};
+  tasks.forEach(t => {
+    const email = t.email || 'невідомо';
+    if (!byUser[email]) byUser[email] = [];
+    byUser[email].push(t);
+  });
+
+  const container = document.getElementById('allUsersTasks');
+  Object.entries(byUser).forEach(([email, list]) => {
+    const div = document.createElement('div');
+    div.style = 'margin-bottom:20px;padding:20px;border:1px solid #ccc;border-radius:10px;';
+    div.innerHTML = `<h3>${email}</h3>` + list.map(t => `<div style='text-align:left;'>- ${t.title} (${t.status})</div>`).join('');
+    container.appendChild(div);
+  });
+});
+</script>
+
 </body>
 </html>
