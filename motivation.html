@@ -178,8 +178,6 @@
     margin-right: 8px;
     cursor: pointer;
   }
-
-  #lang-toggle { color: #000 !important; }
 </style>
 </head>
 <body data-page="motivation">
@@ -326,7 +324,9 @@ function downloadBlob(blob, filename) {
   link.click();
   document.body.removeChild(link);
 }
-</script><script src="script.js"></script>
+</script><script src="lang.js"></script>
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="script.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 function loadChallenges() {

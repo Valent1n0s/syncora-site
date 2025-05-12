@@ -155,9 +155,13 @@
     from { opacity: 0; transform: translateY(-20px);}
     to { opacity: 1; transform: translateY(0);}
   }
-
-  #lang-toggle { color: #000 !important; }
 </style>
+
+<script>
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  if (!user) window.location.href = 'login.html';
+</script>
+
 </head>
 <body data-page="performance">
 <!-- Header -->
@@ -238,7 +242,9 @@
 <p>© 2025 SyncOra. Всі права захищені.</p>
 </footer>
 <!-- Скрипти -->
-<script src="script.js"></script>
+<script src="lang.js"></script>
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="script.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 function drawChart(data) {
