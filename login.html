@@ -53,7 +53,9 @@
       text-align: center;
       margin-top: 16px;
     }
-  </style>
+  
+  #lang-toggle { color: #000 !important; }
+</style>
 </head>
 <body>
   <div class="login-box">
@@ -64,11 +66,6 @@
       <div class="error" id="loginError"></div>
       <button type="submit">Увійти</button>
       <p class="register-link">Ще не маєте акаунту? <a href="register.html">Зареєструватися</a></p>
-    
-<div style="text-align: center; margin-top: 16px;">
-  <button type="button" id="googleLoginBtn" style="background: #db4437;">Увійти через Google</button>
-</div>
-
     </form>
   </div>
 
@@ -80,16 +77,7 @@
       const password = document.getElementById('loginPassword').value;
 
       const users = JSON.parse(localStorage.getItem('users')) || [];
-      hashPassword(password).then(hashed => {
-  const user = users.find(user => user.email === email && user.password === hashed);
-  if (!user) {
-    document.getElementById('loginError').innerText = 'Невірний email або пароль.';
-    return;
-  }
-  localStorage.setItem('loggedInUser', JSON.stringify(user));
-  window.location.href = 'dashboard.html';
-});
-return;
+      const user = users.find(user => user.email === email && user.password === password);
 
       if (!user) {
         document.getElementById('loginError').innerText = 'Невірний email або пароль.';
@@ -99,52 +87,6 @@ return;
       localStorage.setItem('loggedInUser', JSON.stringify(user));
       window.location.href = 'dashboard.html';
     });
-  
-// Хешування пароля через Web Crypto API (SHA-256)
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-</script>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDwcanAMLbeLhI9wtDFkTNXyo3RlnfTEvg",
-  authDomain: "syncora-cdfa0.firebaseapp.com",
-  projectId: "syncora-cdfa0",
-  storageBucket: "syncora-cdfa0.firebasestorage.app",
-  messagingSenderId: "811896090212",
-  appId: "1:811896090212:web:d89901d880a002b3587971"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-document.getElementById('googleLoginBtn').addEventListener('click', async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const userData = {
-      name: user.displayName,
-      email: user.email,
-      uid: user.uid,
-      provider: "google"
-    };
-    localStorage.setItem('loggedInUser', JSON.stringify(userData));
-    window.location.href = 'dashboard.html';
-  } catch (error) {
-    alert("Помилка Google-входу: " + error.message);
-  }
-});
-</script>
-
+  </script>
 </body>
 </html>

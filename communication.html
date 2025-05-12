@@ -188,13 +188,9 @@
     margin: 40px auto;
     box-shadow: 0 6px 20px rgba(0,0,0,0.04);
   }
+
+  #lang-toggle { color: #000 !important; }
 </style>
-
-<script>
-  const user = JSON.parse(localStorage.getItem('loggedInUser'));
-  if (!user) window.location.href = 'login.html';
-</script>
-
 </head>
 <body data-page="communication">
 <!-- Header -->
@@ -261,13 +257,6 @@
 </select>
 <button class="btn" type="submit">Розпочати</button>
 </form>
-
-<div style="text-align:center; margin-top: 20px;">
-  <button id="googleCalendarBtn" type="button" style="padding: 10px 20px; background: #4285F4; color: white; border: none; border-radius: 8px; font-weight: 600;">
-    Додати до Google Calendar
-  </button>
-</div>
-
 </div>
 </div>
 <!-- Footer -->
@@ -280,13 +269,6 @@
 <input id="meetingContact" placeholder="Контакт (email або ім’я)" required="" style="width: 100%;" type="text"/>
 <button style="grid-column: span 2;" type="submit">Додати зустріч</button>
 </form>
-
-<div style="text-align:center; margin-top: 20px;">
-  <button id="googleCalendarBtn" type="button" style="padding: 10px 20px; background: #4285F4; color: white; border: none; border-radius: 8px; font-weight: 600;">
-    Додати до Google Calendar
-  </button>
-</div>
-
 <table border="1" style="width:100%;max-width:800px;margin:auto;border-collapse:collapse;">
 <thead>
 <tr style="background:#f0f0f0;">
@@ -303,21 +285,9 @@
 </div>
 </div></div><footer>
 <p>© 2025 SyncOra. Всі права захищені.</p>
-
-<section style="text-align:center; padding:40px;">
-  <h2>Відеозустріч SyncOra</h2>
-  <p>Нижче вікно відеозвʼязку Jitsi Meet для вашої команди</p>
-  <iframe src="https://meet.jit.si/syncora_demo_room"
-          allow="camera; microphone; fullscreen; display-capture"
-          style="width:100%; max-width:800px; height:500px; border:1px solid #ccc; border-radius:12px;">
-  </iframe>
-</section>
-
 </footer>
 <!-- Скрипти -->
-<script src="lang.js"></script>
-<script type="module" src="firebase-config.js"></script>
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
 function loadMeetings() {

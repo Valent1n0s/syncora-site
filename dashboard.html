@@ -41,7 +41,9 @@
       cursor: pointer;
       font-weight: 600;
     }
-  </style>
+  
+  #lang-toggle { color: #000 !important; }
+</style>
 </head>
 <body>
   <div class="container">
@@ -56,7 +58,7 @@
     if (!user) {
       window.location.href = 'login.html';
     } else {
-      document.getElementById('welcomeText').textContent = 'Вітаємо, ' + (user.name || 'користувачу') + '!';
+      document.getElementById('welcomeText').innerText = `Вітаємо, ${user.name}!`;
     }
 
     function logout() {
