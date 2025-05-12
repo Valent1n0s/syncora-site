@@ -286,8 +286,7 @@ document.getElementById('taskSearch').addEventListener('input', loadTasks);
 <h1>Управління</h1>
 <p class="page-subtitle">Плануйте, організовуйте та керуйте завданнями вашої команди ефективно й прозоро.</p>
 </div>
-</section>
-<!-- Main Content -->
+</section><!-- Main Content -->
 <main id="task-coordination">
 <section class="task-features" data-aos="fade-up">
 <div class="task-feature" data-aos="zoom-in">
@@ -302,8 +301,7 @@ document.getElementById('taskSearch').addEventListener('input', loadTasks);
 <h3>Відстеження прогресу</h3>
 <p>Контролюйте виконання через статуси та графіки.</p>
 </div>
-</section>
-<div class="task-action" data-aos="fade-up">
+</section><div class="task-action" data-aos="fade-up">
 <a class="btn-large" href="#" id="openTaskBtn">Створити нове завдання</a>
 </div>
 <section class="task-controls" style="margin: 40px 20px 20px;">
@@ -318,12 +316,10 @@ document.getElementById('taskSearch').addEventListener('input', loadTasks);
 <input id="taskSearch" placeholder="Пошук за назвою" style="padding:10px;border-radius:8px;min-width:220px;" type="text"/>
 </div>
 <div id="taskStats" style="text-align:center;margin-top:20px;"></div>
-</section>
-<section class="task-list" data-aos="fade-up" id="taskList">
+</section><section class="task-list" data-aos="fade-up" id="taskList">
 <h2>Створені завдання</h2>
 <ul id="tasksContainer"></ul>
-</section>
-<div class="export-controls" style="text-align:center; margin-top: 24px;">
+</section><div class="export-controls" style="text-align:center; margin-top: 24px;">
 <button onclick="exportData('json')" style="padding:8px 16px; margin-right: 10px;">Експортувати JSON</button>
 <button onclick="exportData('csv')" style="padding:8px 16px;">Експортувати CSV</button>
 </div>
@@ -479,8 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <thead><tr style="background:#f0f0f0;"><th>Email</th><th>Завдань виконано</th></tr></thead>
     <tbody id="taskRankings"></tbody>
   </table>
-</section>
-<script>
+</section><script>
 function updateTaskRanking() {
   const tbody = document.getElementById('taskRankings');
   tbody.innerHTML = '';
@@ -507,8 +502,7 @@ document.addEventListener('DOMContentLoaded', updateTaskRanking);
 <section style="max-width:1000px;margin:60px auto;">
   <h2 style="text-align:center;">Календар дедлайнів</h2>
   <canvas id="taskCalendarChart" height="200"></canvas>
-</section>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</section><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('taskCalendarChart').getContext('2d');
@@ -541,9 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- Кнопка push-нагадування -->
 <section style="text-align:center;margin:40px auto;">
   <button class="btn-large" onclick="alert('🔔 Push-нагадування активовано!')">Нагадати про дедлайн</button>
-</section>
-
-<!-- Профіль виконавця -->
+</section><!-- Профіль виконавця -->
 <section style="max-width:800px;margin:60px auto;">
   <h2 style="text-align:center;">Ваш профіль</h2>
   <form onsubmit="saveTaskProfile(event)" style="display:grid;gap:16px;max-width:400px;margin:auto;">
@@ -551,8 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <input type="email" id="taskProfileEmail" placeholder="Email" required />
     <button class="btn-large" type="submit">Зберегти</button>
   </form>
-</section>
-<script>
+</section><script>
 function saveTaskProfile(e) {
   e.preventDefault();
   const name = document.getElementById('taskProfileName').value;
@@ -573,14 +564,11 @@ function saveTaskProfile(e) {
         dur="5s" repeatCount="indefinite"/>
     </circle>
   </svg>
-</section>
-
-<!-- Canvas таймлайн -->
+</section><!-- Canvas таймлайн -->
 <section style="text-align:center;margin:60px auto;">
   <h2>Таймлайн завдань</h2>
   <canvas id="taskTimeline" width="500" height="120" style="border:1px solid #ccc;"></canvas>
-</section>
-<script>
+</section><script>
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('taskTimeline');
   const ctx = canvas.getContext('2d');
@@ -599,8 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- Автоматичне створення задачі -->
 <section style="text-align:center;margin:60px auto;">
   <button class="btn-large" onclick="addDailyTask()">📌 Додати щоденну задачу</button>
-</section>
-<script>
+</section><script>
 function addDailyTask() {
   const task = {
     title: 'Щоденна перевірка',
@@ -621,8 +608,7 @@ function addDailyTask() {
 <section style="text-align:center;margin:40px auto;">
   <input id="assigneeFilter" placeholder="Фільтр за виконавцем" style="padding:10px;border-radius:8px;border:1px solid #ccc;" />
   <button onclick="filterByAssignee()" class="btn-large">Фільтрувати</button>
-</section>
-<script>
+</section><script>
 function filterByAssignee() {
   const name = document.getElementById('assigneeFilter').value.toLowerCase();
   const container = document.getElementById('tasksContainer');
@@ -648,8 +634,7 @@ function filterByAssignee() {
 <section style="max-width:1000px;margin:60px auto;">
   <h2 style="text-align:center;">Розподіл завдань за статусом</h2>
   <canvas id="statusChart" height="200"></canvas>
-</section>
-<script>
+</section><script>
 document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('statusChart').getContext('2d');
   const data = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -681,8 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <section style="max-width:800px;margin:60px auto;text-align:center;">
   <h2>Досягнення</h2>
   <div id="badgeBoard" style="font-size:24px;"></div>
-</section>
-<script>
+</section><script>
 document.addEventListener('DOMContentLoaded', () => {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   const doneCount = tasks.filter(t => t.status === 'Done').length;
@@ -709,8 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
   <h2>Швидкі дії</h2>
   <button class="btn-large" onclick="markAllDone()">✅ Завершити всі</button>
   <button class="btn-large" onclick="clearCompleted()">🧹 Очистити завершені</button>
-</section>
-<script>
+</section><script>
 function markAllDone() {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   tasks.forEach(t => t.status = 'Done');
@@ -760,8 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
     <div id="d1"></div><div id="d2"></div><div id="d3"></div><div id="d4"></div><div id="d5"></div><div id="d6"></div><div id="d7"></div>
   </div>
-</section>
-<script>
+</section><script>
 document.addEventListener('DOMContentLoaded', () => {
   const days = ['d1','d2','d3','d4','d5','d6','d7'];
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -782,8 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <section style="max-width:1000px;margin:60px auto;">
   <h2 style="text-align:center;">Проєкти</h2>
   <div id="projectTabs" style="display:flex;gap:10px;justify-content:center;"></div>
-</section>
-<script>
+</section><script>
 document.addEventListener('DOMContentLoaded', () => {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   const projects = [...new Set(tasks.map(t => t.project || 'Без проєкту'))];
@@ -816,8 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <button class="btn-large" type="submit">➕ Додати</button>
   </form>
   <ul id="subtaskList" style="margin-top:20px;"></ul>
-</section>
-<script>
+</section><script>
 function addSubtask(e) {
   e.preventDefault();
   const text = document.getElementById('subtaskText').value;
@@ -846,8 +826,7 @@ document.addEventListener('DOMContentLoaded', renderSubtasks);
 <!-- PDF-експорт задач -->
 <section style="text-align:center;margin:60px auto;">
   <button class="btn-large" onclick="downloadTasksPDF()">📄 Експортувати задачі в PDF</button>
-</section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</section><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 async function downloadTasksPDF() {
   const {{ jsPDF }} = window.jspdf;
@@ -872,8 +851,7 @@ async function downloadTasksPDF() {
 <section style="max-width:800px;margin:60px auto;text-align:center;">
   <h2>Користувачі та задачі</h2>
   <div id="allUsersTasks"></div>
-</section>
-<script>
+</section><script>
 document.addEventListener('DOMContentLoaded', () => {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   const byUser = {};
